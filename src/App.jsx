@@ -623,8 +623,8 @@ export default function CalculoHorasApp() {
         }
         
         .stat-card {
-          background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%);
-          border: 1px solid rgba(59, 130, 246, 0.2);
+          background: linear-gradient(135deg, rgba(59, 130, 246, 0.04) 0%, rgba(37, 99, 235, 0.02) 100%);
+          border: 1px solid rgba(59, 130, 246, 0.15);
         }
         
         .animate-fade-in {
@@ -733,7 +733,7 @@ export default function CalculoHorasApp() {
             <div className="flex items-center gap-2 text-sm">
               <div className="px-4 py-2 bg-gray-50 rounded-lg border border-gray-300">
                 <span className="text-gray-600">Total Geral:</span>
-                <span className="ml-2 font-mono font-bold text-blue-600">{formatMoeda(totalGeralCustos)}</span>
+                <span className="ml-2 font-mono font-bold text-blue-800">{formatMoeda(totalGeralCustos)}</span>
               </div>
             </div>
           </div>
@@ -755,8 +755,8 @@ export default function CalculoHorasApp() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 px-6 py-4 font-semibold transition-all relative ${
                   activeTab === tab.id 
-                    ? 'text-blue-600 bg-white' 
-                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50/50'
+                    ? 'text-blue-800 bg-white' 
+                    : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50/50'
                 }`}
               >
                 <tab.icon className="w-4 h-4" />
@@ -776,7 +776,7 @@ export default function CalculoHorasApp() {
           <div className="animate-fade-in space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-display">Custos Fixos Mensais</h2>
+                <h2 className="text-2xl font-display text-gray-900">Custos Fixos Mensais</h2>
                 <p className="text-gray-600 mt-1">Gerencie todos os custos operacionais fixos</p>
               </div>
               <button
@@ -801,7 +801,7 @@ export default function CalculoHorasApp() {
                         type="text"
                         value={custo.nome}
                         onChange={(e) => atualizarCusto(custo.id, 'nome', e.target.value)}
-                        className="bg-white border border-gray-300 rounded-lg px-4 py-2.5 focus:border-blue-500 transition-all"
+                        className="bg-white border border-gray-300 rounded-lg text-gray-900 px-4 py-2.5 focus:border-blue-500 transition-all"
                         placeholder="Nome do custo"
                       />
                       <input
@@ -809,13 +809,13 @@ export default function CalculoHorasApp() {
                         value={obterValorCusto(custo.id)}
                         onChange={(e) => atualizarCusto(custo.id, 'valor', e.target.value)}
                         onBlur={() => limparValorTemp(`custo-${custo.id}`)}
-                        className="bg-white border border-gray-300 rounded-lg px-4 py-2.5 font-mono focus:border-blue-500 transition-all"
+                        className="bg-white border border-gray-300 rounded-lg text-gray-900 px-4 py-2.5 font-mono focus:border-blue-500 transition-all"
                         placeholder="0,00"
                       />
                     </div>
                     <button
                       onClick={() => removerCusto(custo.id)}
-                      className="p-2.5 bg-red-600/10 hover:bg-red-600/20 text-red-500 rounded-lg transition-colors"
+                      className="p-2.5 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition-colors"
                     >
                       <Trash2 className="w-5 h-5" />
                     </button>
@@ -827,10 +827,10 @@ export default function CalculoHorasApp() {
             <div className="stat-card rounded-xl p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-600 text-sm font-semibold uppercase tracking-wide">Total Custos Fixos</p>
+                  <p className="text-gray-700 text-sm font-semibold uppercase tracking-wide">Total Custos Fixos</p>
                   <p className="text-4xl font-display mt-2">{formatMoeda(totalCustosFixos)}</p>
                 </div>
-                <DollarSign className="w-12 h-12 text-blue-500 opacity-50" />
+                <DollarSign className="w-12 h-12 text-blue-700 opacity-50" />
               </div>
             </div>
           </div>
@@ -842,25 +842,25 @@ export default function CalculoHorasApp() {
             {/* Info sobre INSS */}
             <div className="bg-blue-900/20 border border-blue-800/30 rounded-xl p-5">
               <div className="flex items-start gap-3">
-                <DollarSign className="w-5 h-5 text-blue-600 mt-1" />
+                <DollarSign className="w-5 h-5 text-blue-800 mt-1" />
                 <div>
                   <h4 className="font-semibold text-blue-300 mb-2">Faixas de INSS 2024/2025</h4>
                   <div className="grid md:grid-cols-4 gap-4 text-sm">
                     <div>
                       <span className="text-gray-600">Até R$ 1.621,00</span>
-                      <p className="text-blue-600 font-semibold">7,5%</p>
+                      <p className="text-blue-800 font-semibold">7,5%</p>
                     </div>
                     <div>
                       <span className="text-gray-600">R$ 1.621,01 - R$ 2.902,84</span>
-                      <p className="text-blue-600 font-semibold">9%</p>
+                      <p className="text-blue-800 font-semibold">9%</p>
                     </div>
                     <div>
                       <span className="text-gray-600">R$ 2.902,85 - R$ 4.354,27</span>
-                      <p className="text-blue-600 font-semibold">12%</p>
+                      <p className="text-blue-800 font-semibold">12%</p>
                     </div>
                     <div>
                       <span className="text-gray-600">R$ 4.354,28 - R$ 8.475,55</span>
-                      <p className="text-blue-600 font-semibold">14%</p>
+                      <p className="text-blue-800 font-semibold">14%</p>
                     </div>
                   </div>
                   <p className="text-xs text-gray-500 mt-2">Cálculo progressivo (similar ao IR)</p>
@@ -871,14 +871,14 @@ export default function CalculoHorasApp() {
             {/* Info sobre Encargos */}
             <div className="bg-green-900/20 border border-green-800/30 rounded-xl p-5">
               <div className="flex items-start gap-3">
-                <TrendingUp className="w-5 h-5 text-green-400 mt-1" />
+                <TrendingUp className="w-5 h-5 text-green-700 mt-1" />
                 <div>
                   <h4 className="font-semibold text-green-300 mb-2">Cálculo de Encargos Trabalhistas</h4>
                   <p className="text-sm text-gray-600 leading-relaxed">
                     <span className="text-yellow-400 font-semibold">Encargos aplicados sobre Salário Base:</span> 13º salário, Férias (1/3), INSS e FGTS (8%)
                   </p>
                   <p className="text-sm text-gray-600 leading-relaxed mt-1">
-                    <span className="text-green-400 font-semibold">Extras e Auxílios:</span> Somados ao custo total SEM incidência de encargos
+                    <span className="text-green-700 font-semibold">Extras e Auxílios:</span> Somados ao custo total SEM incidência de encargos
                   </p>
                 </div>
               </div>
@@ -906,16 +906,16 @@ export default function CalculoHorasApp() {
                       type="text"
                       value={novaCategoria.nome}
                       onChange={(e) => setNovaCategoria({ ...novaCategoria, nome: e.target.value })}
-                      className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5 focus:border-blue-500 transition-all"
+                      className="w-full bg-white border border-gray-300 rounded-lg text-gray-900 px-4 py-2.5 focus:border-blue-500 transition-all"
                       placeholder="Ex: Instalação, Manutenção..."
                     />
                   </div>
                   <div>
                     <label className="text-sm text-gray-600 block mb-2">Cor</label>
-                    <select
+                    <select className="text-gray-900"
                       value={novaCategoria.cor}
                       onChange={(e) => setNovaCategoria({ ...novaCategoria, cor: e.target.value })}
-                      className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5 focus:border-blue-500 transition-all"
+                      className="w-full bg-white border border-gray-300 rounded-lg text-gray-900 px-4 py-2.5 focus:border-blue-500 transition-all"
                     >
                       <option value="red">Vermelho</option>
                       <option value="orange">Laranja</option>
@@ -970,7 +970,7 @@ export default function CalculoHorasApp() {
                       <div className="flex items-center gap-2">
                         <h3 className="text-xl font-display">{categoria.nome}</h3>
                         {categoria.rateado && (
-                          <span className="text-xs px-2 py-1 bg-blue-900/30 text-blue-600 rounded-full border border-blue-800/30">
+                          <span className="text-xs px-2 py-1 bg-blue-900/30 text-blue-800 rounded-full border border-blue-800/30">
                             Rateado
                           </span>
                         )}
@@ -995,7 +995,7 @@ export default function CalculoHorasApp() {
                     {!['socio', 'administrativo', 'pcp', 'comercial', 'marceneiro', 'auxiliar'].includes(categoria.id) && (
                       <button
                         onClick={() => removerCategoria(categoria.id)}
-                        className="p-2 bg-red-600/10 hover:bg-red-600/20 text-red-500 rounded-lg transition-colors"
+                        className="p-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition-colors"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -1015,48 +1015,48 @@ export default function CalculoHorasApp() {
                             type="text"
                             value={func.nome}
                             onChange={(e) => atualizarFuncionario(categoria.id, func.id, 'nome', e.target.value)}
-                            className="bg-white border border-gray-300 rounded-lg px-4 py-2.5 focus:border-blue-500 transition-all"
+                            className="bg-white border border-gray-300 rounded-lg text-gray-900 px-4 py-2.5 focus:border-blue-500 transition-all"
                             placeholder="Nome"
                           />
                           <div>
                             <label className="text-xs text-gray-500 block mb-1.5 flex items-center gap-1">
                               Salário Base
-                              <span className="text-[10px] px-1.5 py-0.5 bg-yellow-900/30 text-yellow-400 rounded">com encargos</span>
+                              <span className="text-[10px] px-1.5 py-0.5 bg-yellow-50 text-yellow-800 border border-yellow-200 rounded">com encargos</span>
                             </label>
                             <input
                               type="text"
                               value={obterValorInput(categoria.id, func.id, 'salarioBase')}
                               onChange={(e) => atualizarFuncionario(categoria.id, func.id, 'salarioBase', e.target.value)}
                               onBlur={() => limparValorTemp(`${categoria.id}-${func.id}-salarioBase`)}
-                              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5 font-mono focus:border-blue-500 transition-all"
+                              className="w-full bg-white border border-gray-300 rounded-lg text-gray-900 px-4 py-2.5 font-mono focus:border-blue-500 transition-all"
                               placeholder="0,00"
                             />
                           </div>
                           <div>
                             <label className="text-xs text-gray-500 block mb-1.5 flex items-center gap-1">
                               Extras 
-                              <span className="text-[10px] px-1.5 py-0.5 bg-green-900/30 text-green-400 rounded">sem encargos</span>
+                              <span className="text-[10px] px-1.5 py-0.5 bg-green-900/30 text-green-700 rounded">sem encargos</span>
                             </label>
                             <input
                               type="text"
                               value={obterValorInput(categoria.id, func.id, 'extras')}
                               onChange={(e) => atualizarFuncionario(categoria.id, func.id, 'extras', e.target.value)}
                               onBlur={() => limparValorTemp(`${categoria.id}-${func.id}-extras`)}
-                              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5 font-mono focus:border-blue-500 transition-all"
+                              className="w-full bg-white border border-gray-300 rounded-lg text-gray-900 px-4 py-2.5 font-mono focus:border-blue-500 transition-all"
                               placeholder="0,00"
                             />
                           </div>
                           <div>
                             <label className="text-xs text-gray-500 block mb-1.5 flex items-center gap-1">
                               Auxílio
-                              <span className="text-[10px] px-1.5 py-0.5 bg-green-900/30 text-green-400 rounded">sem encargos</span>
+                              <span className="text-[10px] px-1.5 py-0.5 bg-green-900/30 text-green-700 rounded">sem encargos</span>
                             </label>
                             <input
                               type="text"
                               value={obterValorInput(categoria.id, func.id, 'auxilio')}
                               onChange={(e) => atualizarFuncionario(categoria.id, func.id, 'auxilio', e.target.value)}
                               onBlur={() => limparValorTemp(`${categoria.id}-${func.id}-auxilio`)}
-                              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5 font-mono focus:border-blue-500 transition-all"
+                              className="w-full bg-white border border-gray-300 rounded-lg text-gray-900 px-4 py-2.5 font-mono focus:border-blue-500 transition-all"
                               placeholder="0,00"
                             />
                           </div>
@@ -1082,24 +1082,24 @@ export default function CalculoHorasApp() {
                             {func.extras > 0 && (
                               <div className="flex justify-between text-xs">
                                 <span className="text-gray-500">Extras (sem enc.):</span>
-                                <span className="font-mono text-green-400">+{formatMoeda(func.extras)}</span>
+                                <span className="font-mono text-green-700">+{formatMoeda(func.extras)}</span>
                               </div>
                             )}
                             {func.auxilio > 0 && (
                               <div className="flex justify-between text-xs">
                                 <span className="text-gray-500">Auxílio (sem enc.):</span>
-                                <span className="font-mono text-green-400">+{formatMoeda(func.auxilio)}</span>
+                                <span className="font-mono text-green-700">+{formatMoeda(func.auxilio)}</span>
                               </div>
                             )}
                             <div className="flex justify-between pt-1.5 border-t border-gray-300">
                               <span className="text-gray-600 font-semibold text-xs">TOTAL:</span>
-                              <span className="font-mono text-base font-bold text-blue-600">{formatMoeda(calcularCustoFuncionario(func))}</span>
+                              <span className="font-mono text-base font-bold text-blue-800">{formatMoeda(calcularCustoFuncionario(func))}</span>
                             </div>
                           </div>
                         </div>
                         <button
                           onClick={() => removerFuncionario(categoria.id, func.id)}
-                          className="p-2.5 bg-red-600/10 hover:bg-red-600/20 text-red-500 rounded-lg transition-colors"
+                          className="p-2.5 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition-colors"
                         >
                           <Trash2 className="w-5 h-5" />
                         </button>
@@ -1122,14 +1122,14 @@ export default function CalculoHorasApp() {
         {activeTab === 'calculo' && (
           <div className="animate-fade-in space-y-6">
             <div>
-              <h2 className="text-2xl font-display">Cálculo de Custo por Hora</h2>
+              <h2 className="text-2xl font-display text-gray-900">Cálculo de Custo por Hora</h2>
               <p className="text-gray-600 mt-1">Custos diretos + rateio proporcional de custos indiretos</p>
             </div>
 
             {/* Configurações de Horas */}
             <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
               <h3 className="text-lg font-display mb-4 flex items-center gap-2">
-                <Clock className="w-5 h-5 text-blue-500" />
+                <Clock className="w-5 h-5 text-blue-700" />
                 Configurações de Horas
               </h3>
               <div className="grid md:grid-cols-3 gap-4">
@@ -1140,7 +1140,7 @@ export default function CalculoHorasApp() {
                     value={obterValorHora('contratadas', horasContratadas)}
                     onChange={(e) => atualizarHorasContratadas(e.target.value)}
                     onBlur={() => limparValorTemp('hora-contratadas')}
-                    className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5 font-mono text-xl font-bold focus:border-blue-500 transition-all"
+                    className="w-full bg-white border border-gray-300 rounded-lg text-gray-900 px-4 py-2.5 font-mono text-xl font-bold focus:border-blue-500 transition-all"
                     placeholder="180,00"
                   />
                 </div>
@@ -1153,7 +1153,7 @@ export default function CalculoHorasApp() {
                         <path d="M12 16v-4" strokeWidth="2"/>
                         <circle cx="12" cy="8" r="0.5" fill="currentColor"/>
                       </svg>
-                      <span className="invisible group-hover:visible absolute left-0 top-6 w-64 bg-white border border-gray-300 rounded-lg p-3 text-xs text-gray-700 shadow-xl z-10">
+                      <span className="invisible group-hover:visible absolute left-0 top-6 w-64 bg-white border border-gray-300 rounded-lg p-3 text-xs text-gray-900 shadow-xl z-10">
                         Desconta tempo improdutivo apenas dos setores que geram receita
                       </span>
                     </span>
@@ -1163,7 +1163,7 @@ export default function CalculoHorasApp() {
                     value={obterValorHora('ociosas', horasOciosas)}
                     onChange={(e) => atualizarHorasOciosas(e.target.value)}
                     onBlur={() => limparValorTemp('hora-ociosas')}
-                    className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5 font-mono text-xl font-bold focus:border-blue-500 transition-all"
+                    className="w-full bg-white border border-gray-300 rounded-lg text-gray-900 px-4 py-2.5 font-mono text-xl font-bold focus:border-blue-500 transition-all"
                     placeholder="0,50"
                   />
                 </div>
@@ -1174,7 +1174,7 @@ export default function CalculoHorasApp() {
                     value={obterValorHora('dias', diasMedio)}
                     onChange={(e) => atualizarDiasMedio(e.target.value)}
                     onBlur={() => limparValorTemp('hora-dias')}
-                    className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5 font-mono text-xl font-bold focus:border-blue-500 transition-all"
+                    className="w-full bg-white border border-gray-300 rounded-lg text-gray-900 px-4 py-2.5 font-mono text-xl font-bold focus:border-blue-500 transition-all"
                     placeholder="21,00"
                   />
                 </div>
@@ -1184,7 +1184,7 @@ export default function CalculoHorasApp() {
             {/* Info sobre Rateio */}
             <div className="bg-blue-900/20 border border-blue-800/30 rounded-xl p-5">
               <div className="flex items-start gap-3">
-                <TrendingUp className="w-5 h-5 text-blue-600 mt-1" />
+                <TrendingUp className="w-5 h-5 text-blue-800 mt-1" />
                 <div className="w-full">
                   <h4 className="font-semibold text-blue-300 mb-2">Rateio Proporcional de Custos</h4>
                   <p className="text-sm text-gray-600 leading-relaxed mb-3">
@@ -1240,13 +1240,13 @@ export default function CalculoHorasApp() {
                           <span className="font-mono">{formatMoeda(resultado.custoRateado)}</span>
                         </div>
                         <div className="flex justify-between font-semibold pt-2 border-t border-gray-300">
-                          <span className="text-gray-700">Custo Total</span>
+                          <span className="text-gray-900">Custo Total</span>
                           <span className="font-mono">{formatMoeda(resultado.custoTotal)}</span>
                         </div>
                       </div>
 
                       <div className="flex justify-between items-center py-4 bg-gray-50/50 rounded-lg px-4 mt-4">
-                        <span className="text-gray-700 font-semibold">CUSTO/HORA</span>
+                        <span className="text-gray-900 font-semibold">CUSTO/HORA</span>
                         <span className={`font-mono text-2xl font-bold text-${categoria.cor}-400`}>
                           {formatMoeda(resultado.custoHora)}
                         </span>
@@ -1263,27 +1263,27 @@ export default function CalculoHorasApp() {
         {activeTab === 'resumo' && (
           <div className="animate-fade-in space-y-6">
             <div>
-              <h2 className="text-2xl font-display">Resumo Geral</h2>
+              <h2 className="text-2xl font-display text-gray-900">Resumo Geral</h2>
               <p className="text-gray-600 mt-1">Visão consolidada de todos os custos e indicadores</p>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
               <div className="stat-card rounded-xl p-5">
-                <p className="text-gray-600 text-sm font-semibold mb-2">Custos Fixos</p>
-                <p className="text-2xl font-display">{formatMoeda(totalCustosFixos)}</p>
+                <p className="text-gray-700 text-sm font-semibold mb-2">Custos Fixos</p>
+                <p className="text-2xl font-display text-gray-900">{formatMoeda(totalCustosFixos)}</p>
               </div>
               <div className="stat-card rounded-xl p-5">
-                <p className="text-gray-600 text-sm font-semibold mb-2">Societário</p>
-                <p className="text-2xl font-display">{formatMoeda(calcularCustosSetor('socio'))}</p>
+                <p className="text-gray-700 text-sm font-semibold mb-2">Societário</p>
+                <p className="text-2xl font-display text-gray-900">{formatMoeda(calcularCustosSetor('socio'))}</p>
               </div>
               <div className="stat-card rounded-xl p-5">
-                <p className="text-gray-600 text-sm font-semibold mb-2">Admin + PCP + Comercial</p>
-                <p className="text-2xl font-display">{formatMoeda(custoAdmin + custoPCP + custoComercial)}</p>
+                <p className="text-gray-700 text-sm font-semibold mb-2">Admin + PCP + Comercial</p>
+                <p className="text-2xl font-display text-gray-900">{formatMoeda(custoAdmin + custoPCP + custoComercial)}</p>
               </div>
               <div className="stat-card rounded-xl p-5">
-                <p className="text-gray-600 text-sm font-semibold mb-2">Custos Produção</p>
+                <p className="text-gray-700 text-sm font-semibold mb-2">Custos Produção</p>
                 <p className="text-gray-500 text-xs mb-1">Marceneiro e Auxiliares</p>
-                <p className="text-2xl font-display">{formatMoeda(totalCustosProducao)}</p>
+                <p className="text-2xl font-display text-gray-900">{formatMoeda(totalCustosProducao)}</p>
               </div>
               <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl p-5">
                 <p className="text-blue-100 text-sm font-semibold mb-2">TOTAL GERAL</p>
@@ -1294,7 +1294,7 @@ export default function CalculoHorasApp() {
             {/* Categorias Customizadas */}
             {custosCategoriasCustom > 0 && (
               <div>
-                <h3 className="text-lg font-display mb-3 text-gray-700">Outras Categorias</h3>
+                <h3 className="text-lg font-display mb-3 text-gray-900">Outras Categorias</h3>
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                   {categorias
                     .filter(cat => !['socio', 'administrativo', 'pcp', 'comercial', 'marceneiro', 'auxiliar'].includes(cat.id))
@@ -1305,7 +1305,7 @@ export default function CalculoHorasApp() {
                         <div key={cat.id} className="stat-card rounded-xl p-4">
                           <div className="flex items-center gap-2 mb-2">
                             <div className={`w-2 h-2 rounded-full bg-${cat.cor}-500`}></div>
-                            <p className="text-gray-600 text-sm font-semibold">{cat.nome}</p>
+                            <p className="text-gray-700 text-sm font-semibold">{cat.nome}</p>
                           </div>
                           <p className="text-xl font-display">{formatMoeda(custo)}</p>
                           {cat.rateado && (
@@ -1321,7 +1321,7 @@ export default function CalculoHorasApp() {
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
                 <h3 className="text-lg font-display mb-4 flex items-center gap-2">
-                  <Users className="w-5 h-5 text-blue-500" />
+                  <Users className="w-5 h-5 text-blue-700" />
                   Custos por Categoria
                 </h3>
                 <div className="space-y-3 max-h-96 overflow-y-auto">
@@ -1329,7 +1329,7 @@ export default function CalculoHorasApp() {
                     <div key={cat.id} className="flex items-center justify-between py-2">
                       <div className="flex items-center gap-2">
                         <div className={`w-2 h-2 rounded-full bg-${cat.cor}-500`}></div>
-                        <span className="text-gray-700">{cat.nome}</span>
+                        <span className="text-gray-900">{cat.nome}</span>
                         {cat.rateado && pesoRateio[cat.id] !== undefined && (
                           <span className="text-xs text-gray-500">({(pesoRateio[cat.id] * 100).toFixed(0)}%)</span>
                         )}
@@ -1342,7 +1342,7 @@ export default function CalculoHorasApp() {
 
               <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
                 <h3 className="text-lg font-display mb-4 flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-blue-500" />
+                  <Clock className="w-5 h-5 text-blue-700" />
                   Custo/Hora com Rateio
                 </h3>
                 <div className="space-y-4 max-h-96 overflow-y-auto">
@@ -1355,7 +1355,7 @@ export default function CalculoHorasApp() {
                         <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center gap-2">
                             <div className={`w-2 h-2 rounded-full bg-${cat.cor}-500`}></div>
-                            <span className="text-gray-700 font-semibold">{cat.nome}</span>
+                            <span className="text-gray-900 font-semibold">{cat.nome}</span>
                           </div>
                           <span className={`font-mono text-xl font-bold text-${cat.cor}-400`}>
                             {formatMoeda(resultado.custoHora)}
@@ -1389,13 +1389,13 @@ export default function CalculoHorasApp() {
             {/* Detalhamento do Rateio */}
             <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
               <h3 className="text-lg font-display mb-4 flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-blue-500" />
+                <TrendingUp className="w-5 h-5 text-blue-700" />
                 Metodologia de Rateio
               </h3>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 <div>
                   <p className="text-sm text-gray-600 mb-2">Custos Não-Rateados Total</p>
-                  <p className="text-2xl font-mono font-bold text-blue-600">{formatMoeda(custosNaoRateados)}</p>
+                  <p className="text-2xl font-mono font-bold text-blue-800">{formatMoeda(custosNaoRateados)}</p>
                   <p className="text-xs text-gray-500 mt-1">Fixos + Societário + Admin + PCP + Comercial + Outras</p>
                 </div>
                 {categoriasRateadas.map(cat => (
@@ -1417,7 +1417,7 @@ export default function CalculoHorasApp() {
               <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                 <div className="flex-1">
                   <h3 className="text-lg font-display mb-2 flex items-center gap-2">
-                    <Download className="w-5 h-5 text-blue-500" />
+                    <Download className="w-5 h-5 text-blue-700" />
                     Exportar Relatório
                   </h3>
                   <p className="text-sm text-gray-600">
@@ -1427,7 +1427,7 @@ export default function CalculoHorasApp() {
                 </div>
                 <button
                   onClick={gerarPDF}
-                  className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all hover:scale-105 active:scale-95"
+                  className="flex items-center gap-2 px-6 py-3 bg-blue-700 hover:bg-blue-800 text-white font-semibold rounded-lg font-semibold transition-all hover:scale-105 active:scale-95"
                 >
                   <Download className="w-5 h-5" />
                   Baixar PDF
