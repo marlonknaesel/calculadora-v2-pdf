@@ -5,11 +5,12 @@ import 'jspdf-autotable';
 
 export default function CalculoHorasApp() {
   // 🔍 VERIFICAÇÃO DE VERSÃO
-  console.log('📱 VERSÃO: v1.8-MOBILE-FIXED');
+  console.log('📊 VERSÃO: v1.9-EXECUTIVE-PDF');
+  console.log('✅ PDF Executivo com Big Numbers e Rankings');
   console.log('✅ Menu com scroll horizontal no mobile');
   console.log('✅ Paddings responsivos aplicados');
-  console.log('✅ Mantém high contrast');
-  console.log('📅 Data: 14/01/2026 - 20:30');
+  console.log('✅ High contrast mantido');
+  console.log('📅 Data: 14/01/2026 - 21:00');
   
   const [activeTab, setActiveTab] = useState('custos');
   
@@ -444,96 +445,298 @@ export default function CalculoHorasApp() {
   const gerarPDF = () => {
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.getWidth();
-    let currentY = 20;
+    const pageHeight = doc.internal.pageSize.getHeight();
+    let currentY = 0;
 
-    // Título
-    doc.setFontSize(18);
-    doc.setFont('helvetica', 'bold');
-    doc.text('RELATÓRIO DE CUSTOS E PRODUTIVIDADE', pageWidth / 2, currentY, { align: 'center' });
+    // ============================================================================
+    // CABEÇALHO PROFISSIONAL COM BARRA COLORIDA
+    // ============================================================================
     
-    currentY += 10;
+    // Barra azul escura no topo (altura 25mm)
+    doc.setFillColor(30, 64, 175); // #1e40af
+    doc.rect(0, 0, pageWidth, 25, 'F');
+    
+    // Título em branco sobre a barra
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(20);
+    doc.setFont('helvetica', 'bold');
+    doc.text('RELATÓRIO DE CUSTOS E VIABILIDADE', pageWidth / 2, 12, { align: 'center' });
+    
+    // Subtítulo
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
-    const dataAtual = new Date().toLocaleDateString('pt-BR');
-    doc.text(`Gerado em: ${dataAtual}`, pageWidth / 2, currentY, { align: 'center' });
+    doc.text('Análise Gerencial de Inteligência - Marcenaria', pageWidth / 2, 19, { align: 'center' });
     
-    currentY += 15;
+    // Data e hora à direita
+    const agora = new Date();
+    const dataHora = `${agora.toLocaleDateString('pt-BR')} às ${agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
+    doc.setFontSize(8);
+    doc.text(`Emitido em: ${dataHora}`, pageWidth - 14, 8, { align: 'right' });
+    
+    currentY = 35;
 
-    // 1. RESUMO DE CUSTOS FIXOS
+    // ============================================================================
+    // BIG NUMBERS - RESUMO EXECUTIVO (3 CARDS)
+    // ============================================================================
+    
+    doc.setTextColor(0, 0, 0); // Voltar para preto
+    
+    // Calcular KPIs
+    const custoOperacionalTotal = totalCustosFixos + totalFolhaPagamento;
+    
+    // Custo Minuto Técnico (média dos marceneiros)
+    const resultadoMarceneiro = resultadosPorCategoria['marceneiro'];
+    const custoMinutoTecnico = resultadoMarceneiro && resultadoMarceneiro.custoHora > 0 
+      ? resultadoMarceneiro.custoHora / 60 
+      : 0;
+    
+    // Taxa de Eficiência (total horas úteis / total horas contratadas)
+    let totalHorasContratadas = 0;
+    let totalHorasUteis = 0;
+    
+    categorias.forEach(cat => {
+      const qtdFunc = funcionarios[cat.id] ? funcionarios[cat.id].length : 0;
+      const horasContratadasCat = qtdFunc * horasContratadas;
+      const horasOciosasTotal = horasOciosas * diasMedio * qtdFunc;
+      const horasUteisCat = horasContratadasCat - horasOciosasTotal;
+      
+      totalHorasContratadas += horasContratadasCat;
+      totalHorasUteis += horasUteisCat;
+    });
+    
+    const taxaEficiencia = totalHorasContratadas > 0 
+      ? (totalHorasUteis / totalHorasContratadas) * 100 
+      : 0;
+    
+    // Desenhar 3 cards lado a lado
+    const cardWidth = 58;
+    const cardHeight = 20;
+    const cardSpacing = 5;
+    const cardStartX = (pageWidth - (cardWidth * 3 + cardSpacing * 2)) / 2;
+    
+    // Card 1: Custo Operacional Total
+    doc.setFillColor(239, 246, 255); // Azul muito claro
+    doc.roundedRect(cardStartX, currentY, cardWidth, cardHeight, 2, 2, 'F');
+    doc.setDrawColor(30, 64, 175);
+    doc.setLineWidth(0.5);
+    doc.roundedRect(cardStartX, currentY, cardWidth, cardHeight, 2, 2, 'S');
+    
+    doc.setFontSize(8);
+    doc.setTextColor(100, 100, 100);
+    doc.text('CUSTO OPERACIONAL TOTAL', cardStartX + cardWidth / 2, currentY + 6, { align: 'center' });
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(30, 64, 175);
+    doc.text(formatMoeda(custoOperacionalTotal), cardStartX + cardWidth / 2, currentY + 14, { align: 'center' });
+    
+    // Card 2: Custo Minuto Técnico
+    const card2X = cardStartX + cardWidth + cardSpacing;
+    doc.setFillColor(239, 246, 255);
+    doc.roundedRect(card2X, currentY, cardWidth, cardHeight, 2, 2, 'F');
+    doc.roundedRect(card2X, currentY, cardWidth, cardHeight, 2, 2, 'S');
+    
+    doc.setFontSize(8);
+    doc.setTextColor(100, 100, 100);
+    doc.text('CUSTO DO MINUTO TÉCNICO', card2X + cardWidth / 2, currentY + 6, { align: 'center' });
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(30, 64, 175);
+    doc.text(formatMoeda(custoMinutoTecnico), card2X + cardWidth / 2, currentY + 14, { align: 'center' });
+    
+    // Card 3: Taxa de Eficiência
+    const card3X = card2X + cardWidth + cardSpacing;
+    doc.setFillColor(239, 246, 255);
+    doc.roundedRect(card3X, currentY, cardWidth, cardHeight, 2, 2, 'F');
+    doc.roundedRect(card3X, currentY, cardWidth, cardHeight, 2, 2, 'S');
+    
+    doc.setFontSize(8);
+    doc.setTextColor(100, 100, 100);
+    doc.text('TAXA DE EFICIÊNCIA', card3X + cardWidth / 2, currentY + 6, { align: 'center' });
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(30, 64, 175);
+    doc.text(`${taxaEficiencia.toFixed(1)}%`, card3X + cardWidth / 2, currentY + 14, { align: 'center' });
+    
+    currentY += cardHeight + 15;
+
+    // ============================================================================
+    // RANKING DE CUSTOS FIXOS (TOP 5)
+    // ============================================================================
+    
+    doc.setTextColor(0, 0, 0);
     doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
-    doc.text('1. RESUMO DE CUSTOS FIXOS', 14, currentY);
-    currentY += 7;
+    doc.text('RANKING DE CUSTOS FIXOS - TOP 5 VILÕES DO ORÇAMENTO', 14, currentY);
+    currentY += 2;
     
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'normal');
-    doc.text(`Valor Total dos Custos Fixos: ${formatMoeda(totalCustosFixos)}`, 20, currentY);
-    currentY += 10;
-
-    // 2. DETALHAMENTO POR CATEGORIA
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'bold');
-    doc.text('2. DETALHAMENTO POR CATEGORIA', 14, currentY);
-    currentY += 7;
-
+    // Ordenar custos fixos por valor (decrescente)
+    const custosOrdenados = [...custosFixos]
+      .filter(c => c.valor > 0)
+      .sort((a, b) => b.valor - a.valor);
+    
+    const top5 = custosOrdenados.slice(0, 5);
+    const outros = custosOrdenados.slice(5);
+    const valorOutros = outros.reduce((sum, c) => sum + c.valor, 0);
+    
     // Preparar dados da tabela
-    const tabelaCategorias = [];
+    const tabelaCustosFixos = top5.map(custo => {
+      const percentual = totalCustosFixos > 0 ? (custo.valor / totalCustosFixos) * 100 : 0;
+      return [
+        custo.nome,
+        formatMoeda(custo.valor),
+        `${percentual.toFixed(1)}%`
+      ];
+    });
+    
+    // Adicionar linha "Outros" se houver
+    if (valorOutros > 0) {
+      const percentualOutros = totalCustosFixos > 0 ? (valorOutros / totalCustosFixos) * 100 : 0;
+      tabelaCustosFixos.push([
+        `Outros (${outros.length} itens)`,
+        formatMoeda(valorOutros),
+        `${percentualOutros.toFixed(1)}%`
+      ]);
+    }
+    
+    // Linha de total
+    tabelaCustosFixos.push([
+      'TOTAL',
+      formatMoeda(totalCustosFixos),
+      '100.0%'
+    ]);
+    
+    doc.autoTable({
+      startY: currentY,
+      head: [['Item', 'Valor (R$)', '% do Total']],
+      body: tabelaCustosFixos,
+      theme: 'striped',
+      headStyles: { 
+        fillColor: [30, 64, 175], 
+        textColor: 255, 
+        fontStyle: 'bold',
+        fontSize: 10,
+        halign: 'left'
+      },
+      styles: { 
+        fontSize: 9, 
+        cellPadding: 4,
+        textColor: [50, 50, 50]
+      },
+      columnStyles: {
+        0: { cellWidth: 100, halign: 'left' },
+        1: { cellWidth: 45, halign: 'right', fontStyle: 'bold' },
+        2: { cellWidth: 35, halign: 'center' }
+      },
+      didParseCell: function(data) {
+        // Destacar linha de total
+        if (data.row.index === tabelaCustosFixos.length - 1 && data.section === 'body') {
+          data.cell.styles.fillColor = [220, 230, 245];
+          data.cell.styles.fontStyle = 'bold';
+          data.cell.styles.textColor = [30, 64, 175];
+        }
+      }
+    });
+    
+    currentY = doc.lastAutoTable.finalY + 12;
+
+    // ============================================================================
+    // TABELA DETALHADA DE MÃO DE OBRA
+    // ============================================================================
+    
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text('DETALHAMENTO DE MÃO DE OBRA POR CATEGORIA', 14, currentY);
+    currentY += 2;
+    
+    // Preparar dados
+    const tabelaMaoObra = [];
+    
     categorias.forEach(cat => {
       const custoTotal = calcularCustosSetor(cat.id);
       const qtdFunc = funcionarios[cat.id] ? funcionarios[cat.id].length : 0;
-      const totalHorasContratadas = qtdFunc * horasContratadas;
+      const totalHorasContratadasCat = qtdFunc * horasContratadas;
       const horasOciosasTotal = horasOciosas * diasMedio * qtdFunc;
-      const horasUteis = totalHorasContratadas - horasOciosasTotal;
-
-      tabelaCategorias.push([
-        cat.nome,
-        formatMoeda(custoTotal),
-        qtdFunc.toString(),
-        `${totalHorasContratadas.toFixed(0)}h`,
-        `${horasUteis.toFixed(0)}h`
-      ]);
-    });
-
-    doc.autoTable({
-      startY: currentY,
-      head: [['Categoria', 'Custo Total', 'Funcionários', 'Horas Contratadas', 'Horas Úteis']],
-      body: tabelaCategorias,
-      theme: 'grid',
-      headStyles: { fillColor: [37, 99, 235], textColor: 255, fontStyle: 'bold' },
-      styles: { fontSize: 9, cellPadding: 3 },
-      columnStyles: {
-        0: { cellWidth: 50 },
-        1: { cellWidth: 35, halign: 'right' },
-        2: { cellWidth: 30, halign: 'center' },
-        3: { cellWidth: 35, halign: 'center' },
-        4: { cellWidth: 30, halign: 'center' }
+      const horasUteisCat = totalHorasContratadasCat - horasOciosasTotal;
+      
+      const resultado = resultadosPorCategoria[cat.id];
+      const custoHoraCat = resultado ? resultado.custoHora : 0;
+      
+      if (qtdFunc > 0 || custoTotal > 0) {
+        tabelaMaoObra.push([
+          cat.nome,
+          qtdFunc.toString(),
+          formatMoeda(custoTotal),
+          `${totalHorasContratadasCat.toFixed(0)}h`,
+          `${horasUteisCat.toFixed(0)}h`,
+          formatMoeda(custoHoraCat)
+        ]);
       }
     });
+    
+    // Linha de total
+    tabelaMaoObra.push([
+      'TOTAL FOLHA',
+      categorias.reduce((sum, cat) => {
+        const qtd = funcionarios[cat.id] ? funcionarios[cat.id].length : 0;
+        return sum + qtd;
+      }, 0).toString(),
+      formatMoeda(totalFolhaPagamento),
+      `${totalHorasContratadas.toFixed(0)}h`,
+      `${totalHorasUteis.toFixed(0)}h`,
+      '-'
+    ]);
+    
+    doc.autoTable({
+      startY: currentY,
+      head: [['Categoria', 'Qtd', 'Custo Total', 'H. Contratadas', 'H. Úteis', 'Custo/Hora']],
+      body: tabelaMaoObra,
+      theme: 'striped',
+      headStyles: { 
+        fillColor: [30, 64, 175], 
+        textColor: 255, 
+        fontStyle: 'bold',
+        fontSize: 10
+      },
+      styles: { 
+        fontSize: 9, 
+        cellPadding: 4,
+        textColor: [50, 50, 50]
+      },
+      columnStyles: {
+        0: { cellWidth: 55, halign: 'left' },
+        1: { cellWidth: 20, halign: 'center' },
+        2: { cellWidth: 35, halign: 'right', fontStyle: 'bold' },
+        3: { cellWidth: 30, halign: 'center' },
+        4: { cellWidth: 28, halign: 'center' },
+        5: { cellWidth: 32, halign: 'right', fontStyle: 'bold', textColor: [30, 64, 175] }
+      },
+      didParseCell: function(data) {
+        // Destacar linha de total
+        if (data.row.index === tabelaMaoObra.length - 1 && data.section === 'body') {
+          data.cell.styles.fillColor = [220, 230, 245];
+          data.cell.styles.fontStyle = 'bold';
+          data.cell.styles.textColor = [30, 64, 175];
+        }
+      }
+    });
+    
+    currentY = doc.lastAutoTable.finalY + 12;
 
-    currentY = doc.lastAutoTable.finalY + 10;
-
-    // 3. CUSTOS DE PRODUÇÃO (DESTAQUE)
+    // ============================================================================
+    // INDICADORES DE CUSTO/HORA (CATEGORIAS RATEADAS)
+    // ============================================================================
+    
+    // Verificar se há espaço na página, senão adicionar nova
+    if (currentY > pageHeight - 60) {
+      doc.addPage();
+      currentY = 20;
+    }
+    
     doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
-    doc.text('3. CUSTOS DE PRODUÇÃO (CHÃO DE FÁBRICA)', 14, currentY);
-    currentY += 7;
-
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'normal');
-    doc.text(`Total Marceneiros: ${formatMoeda(custoMarceneiro)}`, 20, currentY);
-    currentY += 5;
-    doc.text(`Total Auxiliares: ${formatMoeda(custoAuxiliar)}`, 20, currentY);
-    currentY += 5;
-    doc.setFont('helvetica', 'bold');
-    doc.text(`TOTAL MÃO DE OBRA PRODUTIVA: ${formatMoeda(totalCustosProducao)}`, 20, currentY);
-    currentY += 10;
-
-    // 4. INDICADORES DE CUSTO/HORA
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'bold');
-    doc.text('4. INDICADORES DE CUSTO/HORA', 14, currentY);
-    currentY += 7;
-
+    doc.text('CUSTO/HORA POR CATEGORIA (COM RATEIO)', 14, currentY);
+    currentY += 2;
+    
     const tabelaCustoHora = [];
     categoriasRateadas.forEach(cat => {
       const resultado = resultadosPorCategoria[cat.id];
@@ -547,58 +750,104 @@ export default function CalculoHorasApp() {
         ]);
       }
     });
-
+    
     doc.autoTable({
       startY: currentY,
       head: [['Categoria', 'Custo/Hora', 'Custo Direto', 'Custo Rateado', 'Custo Total']],
       body: tabelaCustoHora,
-      theme: 'grid',
-      headStyles: { fillColor: [37, 99, 235], textColor: 255, fontStyle: 'bold' },
-      styles: { fontSize: 9, cellPadding: 3 },
+      theme: 'striped',
+      headStyles: { 
+        fillColor: [30, 64, 175], 
+        textColor: 255, 
+        fontStyle: 'bold',
+        fontSize: 10
+      },
+      styles: { 
+        fontSize: 9, 
+        cellPadding: 4,
+        textColor: [50, 50, 50]
+      },
       columnStyles: {
-        0: { cellWidth: 50 },
-        1: { cellWidth: 30, halign: 'right', fontStyle: 'bold' },
-        2: { cellWidth: 30, halign: 'right' },
-        3: { cellWidth: 30, halign: 'right' },
-        4: { cellWidth: 40, halign: 'right' }
+        0: { cellWidth: 55, halign: 'left' },
+        1: { cellWidth: 32, halign: 'right', fontStyle: 'bold', textColor: [30, 64, 175] },
+        2: { cellWidth: 32, halign: 'right' },
+        3: { cellWidth: 32, halign: 'right' },
+        4: { cellWidth: 35, halign: 'right', fontStyle: 'bold' }
       }
     });
-
-    currentY = doc.lastAutoTable.finalY + 10;
-
-    // 5. METODOLOGIA
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'bold');
-    doc.text('5. METODOLOGIA', 14, currentY);
-    currentY += 7;
-
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'normal');
-    const textoMetodologia = 
-      'Cálculo baseado em rateio por absorção de custos fixos mais custos variáveis de mão de obra ' +
-      'direta sobre horas úteis. Os custos indiretos (fixos, societário, administrativo, PCP e comercial) ' +
-      'são distribuídos proporcionalmente entre as categorias produtivas com base no peso salarial de cada ' +
-      'categoria. O custo/hora final considera: (Custo Direto da Categoria + Custo Rateado) / Horas Úteis.';
     
-    const linhasMetodologia = doc.splitTextToSize(textoMetodologia, pageWidth - 28);
-    doc.text(linhasMetodologia, 14, currentY);
+    currentY = doc.lastAutoTable.finalY + 12;
 
-    // Rodapé
+    // ============================================================================
+    // NOTAS TÉCNICAS
+    // ============================================================================
+    
+    // Verificar espaço novamente
+    if (currentY > pageHeight - 40) {
+      doc.addPage();
+      currentY = 20;
+    }
+    
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'bold');
+    doc.text('NOTAS TÉCNICAS:', 14, currentY);
+    currentY += 5;
+    
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(80, 80, 80);
+    
+    const notas = [
+      `• Taxa de Eficiência: Considera ${(horasOciosas * diasMedio).toFixed(1)}h de ociosidade por funcionário/mês`,
+      '• Custo Minuto Técnico: Ideal para orçamentos de CNC e operações precisas',
+      '• Ranking de Custos: Ordenado por impacto financeiro decrescente',
+      '• Rateio: Custos indiretos distribuídos proporcionalmente ao peso salarial'
+    ];
+    
+    notas.forEach((nota, index) => {
+      doc.text(nota, 14, currentY + (index * 4));
+    });
+
+    // ============================================================================
+    // RODAPÉ PROFISSIONAL EM TODAS AS PÁGINAS
+    // ============================================================================
+    
     const totalPages = doc.internal.getNumberOfPages();
+    
     for (let i = 1; i <= totalPages; i++) {
       doc.setPage(i);
-      doc.setFontSize(8);
-      doc.setFont('helvetica', 'italic');
+      
+      // Linha horizontal
+      doc.setDrawColor(200, 200, 200);
+      doc.setLineWidth(0.5);
+      doc.line(14, pageHeight - 20, pageWidth - 14, pageHeight - 20);
+      
+      // Texto do rodapé
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(100, 100, 100);
       doc.text(
-        `Página ${i} de ${totalPages} - Marcenaria.ai - Calculadora de Custos`,
+        'Marcenaria.ai - Sistema de Gestão de Custos e Produtividade',
         pageWidth / 2,
-        doc.internal.pageSize.getHeight() - 10,
+        pageHeight - 13,
+        { align: 'center' }
+      );
+      
+      // Numeração de página
+      doc.setFontSize(8);
+      doc.text(
+        `Página ${i} de ${totalPages}`,
+        pageWidth / 2,
+        pageHeight - 8,
         { align: 'center' }
       );
     }
 
-    // Salvar PDF
-    const nomeArquivo = `relatorio-custos-${new Date().toISOString().split('T')[0]}.pdf`;
+    // ============================================================================
+    // SALVAR PDF
+    // ============================================================================
+    
+    const nomeArquivo = `relatorio-gerencial-${new Date().toISOString().split('T')[0]}.pdf`;
     doc.save(nomeArquivo);
   };
 
@@ -1482,4 +1731,3 @@ export default function CalculoHorasApp() {
     </div>
   );
 }
-  
