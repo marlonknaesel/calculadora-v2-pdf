@@ -5,22 +5,23 @@ import 'jspdf-autotable';
 
 export default function CalculoHorasApp() {
   // 🔍 VERIFICAÇÃO DE VERSÃO
-  console.log('📊 VERSÃO: v1.9-FIX-PDF');
-  console.log('✅ CORREÇÃO: totalFolhaPagamento definido');
+  console.log('📊 VERSÃO: v2.0-GRAFITE-NEUTRO');
+  console.log('✅ Visual Neutro (Cinza Chumbo)');
+  console.log('✅ Texto do Minuto Técnico Atualizado');
   
   const [activeTab, setActiveTab] = useState('custos');
   
   // Categorias customizáveis
   const [categorias, setCategorias] = useState([
-    { id: 'socio', nome: 'Sócio/Proprietário', cor: 'violet', rateado: false },
-    { id: 'administrativo', nome: 'Administrativo', cor: 'blue', rateado: false },
-    { id: 'comercial', nome: 'Comercial', cor: 'green', rateado: false },
-    { id: 'pcp', nome: 'PCP', cor: 'cyan', rateado: false },
+    { id: 'socio', nome: 'Sócio/Proprietário', cor: 'stone', rateado: false },
+    { id: 'administrativo', nome: 'Administrativo', cor: 'slate', rateado: false },
+    { id: 'comercial', nome: 'Comercial', cor: 'zinc', rateado: false },
+    { id: 'pcp', nome: 'PCP', cor: 'neutral', rateado: false },
     { id: 'marceneiro', nome: 'Marceneiro', cor: 'orange', rateado: true },
-    { id: 'auxiliar', nome: 'Auxiliar Marceneiro', cor: 'purple', rateado: true }
+    { id: 'auxiliar', nome: 'Auxiliar Marceneiro', cor: 'yellow', rateado: true }
   ]);
 
-  const [novaCategoria, setNovaCategoria] = useState({ nome: '', cor: 'indigo', rateado: false });
+  const [novaCategoria, setNovaCategoria] = useState({ nome: '', cor: 'stone', rateado: false });
   const [mostrarFormCategoria, setMostrarFormCategoria] = useState(false);
 
   // Estados para armazenar valores temporários durante a edição
@@ -254,7 +255,7 @@ export default function CalculoHorasApp() {
       [id]: []
     });
     
-    setNovaCategoria({ nome: '', cor: 'indigo', rateado: false });
+    setNovaCategoria({ nome: '', cor: 'stone', rateado: false });
     setMostrarFormCategoria(false);
   };
 
@@ -437,9 +438,8 @@ export default function CalculoHorasApp() {
     return formatarNumero(valor);
   };
 
-  // Função para gerar PDF
+  // Função para gerar PDF (VERSÃO NEUTRA/GRAFITE)
   const gerarPDF = () => {
-    // CORREÇÃO AQUI: Calculando o total da folha antes de usar no relatório
     const totalFolhaPagamento = categorias.reduce((acc, cat) => {
       return acc + calcularCustosSetor(cat.id);
     }, 0);
@@ -450,11 +450,11 @@ export default function CalculoHorasApp() {
     let currentY = 0;
 
     // ============================================================================
-    // CABEÇALHO PROFISSIONAL COM BARRA COLORIDA
+    // CABEÇALHO PROFISSIONAL COM BARRA NEUTRA (GRAFITE)
     // ============================================================================
     
-    // Barra azul escura no topo (altura 25mm)
-    doc.setFillColor(30, 64, 175); // #1e40af
+    // Barra Cinza Chumbo no topo (altura 25mm)
+    doc.setFillColor(38, 38, 38); // #262626 (Neutral-800/900)
     doc.rect(0, 0, pageWidth, 25, 'F');
     
     // Título em branco sobre a barra
@@ -485,13 +485,13 @@ export default function CalculoHorasApp() {
     // Calcular KPIs
     const custoOperacionalTotal = totalCustosFixos + totalFolhaPagamento;
     
-    // Custo Minuto Técnico (média dos marceneiros)
+    // Custo Minuto Técnico
     const resultadoMarceneiro = resultadosPorCategoria['marceneiro'];
     const custoMinutoTecnico = resultadoMarceneiro && resultadoMarceneiro.custoHora > 0 
       ? resultadoMarceneiro.custoHora / 60 
       : 0;
     
-    // Taxa de Eficiência (total horas úteis / total horas contratadas)
+    // Taxa de Eficiência
     let totalHorasContratadas = 0;
     let totalHorasUteis = 0;
     
@@ -516,46 +516,46 @@ export default function CalculoHorasApp() {
     const cardStartX = (pageWidth - (cardWidth * 3 + cardSpacing * 2)) / 2;
     
     // Card 1: Custo Operacional Total
-    doc.setFillColor(239, 246, 255); // Azul muito claro
+    doc.setFillColor(245, 245, 245); // Cinza muito claro
     doc.roundedRect(cardStartX, currentY, cardWidth, cardHeight, 2, 2, 'F');
-    doc.setDrawColor(30, 64, 175);
+    doc.setDrawColor(38, 38, 38); // Borda Grafite
     doc.setLineWidth(0.5);
     doc.roundedRect(cardStartX, currentY, cardWidth, cardHeight, 2, 2, 'S');
     
     doc.setFontSize(8);
-    doc.setTextColor(100, 100, 100);
+    doc.setTextColor(80, 80, 80);
     doc.text('CUSTO OPERACIONAL TOTAL', cardStartX + cardWidth / 2, currentY + 6, { align: 'center' });
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(30, 64, 175);
+    doc.setTextColor(38, 38, 38);
     doc.text(formatMoeda(custoOperacionalTotal), cardStartX + cardWidth / 2, currentY + 14, { align: 'center' });
     
     // Card 2: Custo Minuto Técnico
     const card2X = cardStartX + cardWidth + cardSpacing;
-    doc.setFillColor(239, 246, 255);
+    doc.setFillColor(245, 245, 245);
     doc.roundedRect(card2X, currentY, cardWidth, cardHeight, 2, 2, 'F');
     doc.roundedRect(card2X, currentY, cardWidth, cardHeight, 2, 2, 'S');
     
     doc.setFontSize(8);
-    doc.setTextColor(100, 100, 100);
+    doc.setTextColor(80, 80, 80);
     doc.text('CUSTO DO MINUTO TÉCNICO', card2X + cardWidth / 2, currentY + 6, { align: 'center' });
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(30, 64, 175);
+    doc.setTextColor(38, 38, 38);
     doc.text(formatMoeda(custoMinutoTecnico), card2X + cardWidth / 2, currentY + 14, { align: 'center' });
     
     // Card 3: Taxa de Eficiência
     const card3X = card2X + cardWidth + cardSpacing;
-    doc.setFillColor(239, 246, 255);
+    doc.setFillColor(245, 245, 245);
     doc.roundedRect(card3X, currentY, cardWidth, cardHeight, 2, 2, 'F');
     doc.roundedRect(card3X, currentY, cardWidth, cardHeight, 2, 2, 'S');
     
     doc.setFontSize(8);
-    doc.setTextColor(100, 100, 100);
+    doc.setTextColor(80, 80, 80);
     doc.text('TAXA DE EFICIÊNCIA', card3X + cardWidth / 2, currentY + 6, { align: 'center' });
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(30, 64, 175);
+    doc.setTextColor(38, 38, 38);
     doc.text(`${taxaEficiencia.toFixed(1)}%`, card3X + cardWidth / 2, currentY + 14, { align: 'center' });
     
     currentY += cardHeight + 15;
@@ -570,7 +570,6 @@ export default function CalculoHorasApp() {
     doc.text('RANKING DE CUSTOS FIXOS - TOP 5 VILÕES DO ORÇAMENTO', 14, currentY);
     currentY += 2;
     
-    // Ordenar custos fixos por valor (decrescente)
     const custosOrdenados = [...custosFixos]
       .filter(c => c.valor > 0)
       .sort((a, b) => b.valor - a.valor);
@@ -579,7 +578,6 @@ export default function CalculoHorasApp() {
     const outros = custosOrdenados.slice(5);
     const valorOutros = outros.reduce((sum, c) => sum + c.valor, 0);
     
-    // Preparar dados da tabela
     const tabelaCustosFixos = top5.map(custo => {
       const percentual = totalCustosFixos > 0 ? (custo.valor / totalCustosFixos) * 100 : 0;
       return [
@@ -589,7 +587,6 @@ export default function CalculoHorasApp() {
       ];
     });
     
-    // Adicionar linha "Outros" se houver
     if (valorOutros > 0) {
       const percentualOutros = totalCustosFixos > 0 ? (valorOutros / totalCustosFixos) * 100 : 0;
       tabelaCustosFixos.push([
@@ -599,7 +596,6 @@ export default function CalculoHorasApp() {
       ]);
     }
     
-    // Linha de total
     tabelaCustosFixos.push([
       'TOTAL',
       formatMoeda(totalCustosFixos),
@@ -612,1123 +608,7 @@ export default function CalculoHorasApp() {
       body: tabelaCustosFixos,
       theme: 'striped',
       headStyles: { 
-        fillColor: [30, 64, 175], 
+        fillColor: [38, 38, 38], // Grafite
         textColor: 255, 
         fontStyle: 'bold',
-        fontSize: 10,
-        halign: 'left'
-      },
-      styles: { 
-        fontSize: 9, 
-        cellPadding: 4,
-        textColor: [50, 50, 50]
-      },
-      columnStyles: {
-        0: { cellWidth: 100, halign: 'left' },
-        1: { cellWidth: 45, halign: 'right', fontStyle: 'bold' },
-        2: { cellWidth: 35, halign: 'center' }
-      },
-      didParseCell: function(data) {
-        // Destacar linha de total
-        if (data.row.index === tabelaCustosFixos.length - 1 && data.section === 'body') {
-          data.cell.styles.fillColor = [220, 230, 245];
-          data.cell.styles.fontStyle = 'bold';
-          data.cell.styles.textColor = [30, 64, 175];
-        }
-      }
-    });
-    
-    currentY = doc.lastAutoTable.finalY + 12;
-
-    // ============================================================================
-    // TABELA DETALHADA DE MÃO DE OBRA
-    // ============================================================================
-    
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'bold');
-    doc.text('DETALHAMENTO DE MÃO DE OBRA POR CATEGORIA', 14, currentY);
-    currentY += 2;
-    
-    // Preparar dados
-    const tabelaMaoObra = [];
-    
-    categorias.forEach(cat => {
-      const custoTotal = calcularCustosSetor(cat.id);
-      const qtdFunc = funcionarios[cat.id] ? funcionarios[cat.id].length : 0;
-      const totalHorasContratadasCat = qtdFunc * horasContratadas;
-      const horasOciosasTotal = horasOciosas * diasMedio * qtdFunc;
-      const horasUteisCat = totalHorasContratadasCat - horasOciosasTotal;
-      
-      const resultado = resultadosPorCategoria[cat.id];
-      const custoHoraCat = resultado ? resultado.custoHora : 0;
-      
-      if (qtdFunc > 0 || custoTotal > 0) {
-        tabelaMaoObra.push([
-          cat.nome,
-          qtdFunc.toString(),
-          formatMoeda(custoTotal),
-          `${totalHorasContratadasCat.toFixed(0)}h`,
-          `${horasUteisCat.toFixed(0)}h`,
-          formatMoeda(custoHoraCat)
-        ]);
-      }
-    });
-    
-    // Linha de total
-    tabelaMaoObra.push([
-      'TOTAL FOLHA',
-      categorias.reduce((sum, cat) => {
-        const qtd = funcionarios[cat.id] ? funcionarios[cat.id].length : 0;
-        return sum + qtd;
-      }, 0).toString(),
-      formatMoeda(totalFolhaPagamento),
-      `${totalHorasContratadas.toFixed(0)}h`,
-      `${totalHorasUteis.toFixed(0)}h`,
-      '-'
-    ]);
-    
-    doc.autoTable({
-      startY: currentY,
-      head: [['Categoria', 'Qtd', 'Custo Total', 'H. Contratadas', 'H. Úteis', 'Custo/Hora']],
-      body: tabelaMaoObra,
-      theme: 'striped',
-      headStyles: { 
-        fillColor: [30, 64, 175], 
-        textColor: 255, 
-        fontStyle: 'bold',
-        fontSize: 10
-      },
-      styles: { 
-        fontSize: 9, 
-        cellPadding: 4,
-        textColor: [50, 50, 50]
-      },
-      columnStyles: {
-        0: { cellWidth: 55, halign: 'left' },
-        1: { cellWidth: 20, halign: 'center' },
-        2: { cellWidth: 35, halign: 'right', fontStyle: 'bold' },
-        3: { cellWidth: 30, halign: 'center' },
-        4: { cellWidth: 28, halign: 'center' },
-        5: { cellWidth: 32, halign: 'right', fontStyle: 'bold', textColor: [30, 64, 175] }
-      },
-      didParseCell: function(data) {
-        // Destacar linha de total
-        if (data.row.index === tabelaMaoObra.length - 1 && data.section === 'body') {
-          data.cell.styles.fillColor = [220, 230, 245];
-          data.cell.styles.fontStyle = 'bold';
-          data.cell.styles.textColor = [30, 64, 175];
-        }
-      }
-    });
-    
-    currentY = doc.lastAutoTable.finalY + 12;
-
-    // ============================================================================
-    // INDICADORES DE CUSTO/HORA (CATEGORIAS RATEADAS)
-    // ============================================================================
-    
-    // Verificar se há espaço na página, senão adicionar nova
-    if (currentY > pageHeight - 60) {
-      doc.addPage();
-      currentY = 20;
-    }
-    
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'bold');
-    doc.text('CUSTO/HORA POR CATEGORIA (COM RATEIO)', 14, currentY);
-    currentY += 2;
-    
-    const tabelaCustoHora = [];
-    categoriasRateadas.forEach(cat => {
-      const resultado = resultadosPorCategoria[cat.id];
-      if (resultado) {
-        tabelaCustoHora.push([
-          cat.nome,
-          formatMoeda(resultado.custoHora),
-          formatMoeda(resultado.custoDireto),
-          formatMoeda(resultado.custoRateado),
-          formatMoeda(resultado.custoTotal)
-        ]);
-      }
-    });
-    
-    doc.autoTable({
-      startY: currentY,
-      head: [['Categoria', 'Custo/Hora', 'Custo Direto', 'Custo Rateado', 'Custo Total']],
-      body: tabelaCustoHora,
-      theme: 'striped',
-      headStyles: { 
-        fillColor: [30, 64, 175], 
-        textColor: 255, 
-        fontStyle: 'bold',
-        fontSize: 10
-      },
-      styles: { 
-        fontSize: 9, 
-        cellPadding: 4,
-        textColor: [50, 50, 50]
-      },
-      columnStyles: {
-        0: { cellWidth: 55, halign: 'left' },
-        1: { cellWidth: 32, halign: 'right', fontStyle: 'bold', textColor: [30, 64, 175] },
-        2: { cellWidth: 32, halign: 'right' },
-        3: { cellWidth: 32, halign: 'right' },
-        4: { cellWidth: 35, halign: 'right', fontStyle: 'bold' }
-      }
-    });
-    
-    currentY = doc.lastAutoTable.finalY + 12;
-
-    // ============================================================================
-    // NOTAS TÉCNICAS
-    // ============================================================================
-    
-    // Verificar espaço novamente
-    if (currentY > pageHeight - 40) {
-      doc.addPage();
-      currentY = 20;
-    }
-    
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'bold');
-    doc.text('NOTAS TÉCNICAS:', 14, currentY);
-    currentY += 5;
-    
-    doc.setFontSize(8);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(80, 80, 80);
-    
-    const notas = [
-      `• Taxa de Eficiência: Considera ${(horasOciosas * diasMedio).toFixed(1)}h de ociosidade por funcionário/mês`,
-      '• Custo Minuto Técnico: Ideal para orçamentos de CNC e operações precisas',
-      '• Ranking de Custos: Ordenado por impacto financeiro decrescente',
-      '• Rateio: Custos indiretos distribuídos proporcionalmente ao peso salarial'
-    ];
-    
-    notas.forEach((nota, index) => {
-      doc.text(nota, 14, currentY + (index * 4));
-    });
-
-    // ============================================================================
-    // RODAPÉ PROFISSIONAL EM TODAS AS PÁGINAS
-    // ============================================================================
-    
-    const totalPages = doc.internal.getNumberOfPages();
-    
-    for (let i = 1; i <= totalPages; i++) {
-      doc.setPage(i);
-      
-      // Linha horizontal
-      doc.setDrawColor(200, 200, 200);
-      doc.setLineWidth(0.5);
-      doc.line(14, pageHeight - 20, pageWidth - 14, pageHeight - 20);
-      
-      // Texto do rodapé
-      doc.setFontSize(9);
-      doc.setFont('helvetica', 'normal');
-      doc.setTextColor(100, 100, 100);
-      doc.text(
-        'Marcenaria.ai - Sistema de Gestão de Custos e Produtividade',
-        pageWidth / 2,
-        pageHeight - 13,
-        { align: 'center' }
-      );
-      
-      // Numeração de página
-      doc.setFontSize(8);
-      doc.text(
-        `Página ${i} de ${totalPages}`,
-        pageWidth / 2,
-        pageHeight - 8,
-        { align: 'center' }
-      );
-    }
-
-    // ============================================================================
-    // SALVAR PDF
-    // ============================================================================
-    
-    const nomeArquivo = `relatorio-gerencial-${new Date().toISOString().split('T')[0]}.pdf`;
-    doc.save(nomeArquivo);
-  };
-
-  return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
-      <style>{`
-        /* 🎨 RESET GLOBAL - FORCE LIGHT MODE */
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-        
-        html {
-          background: #f9fafb !important;
-          width: 100% !important;
-          height: 100% !important;
-        }
-        
-        body { 
-          font-family: 'Work Sans', sans-serif;
-          background: #f9fafb !important;
-          color: #111827 !important;
-          margin: 0 !important;
-          padding: 0 !important;
-          width: 100% !important;
-          min-height: 100vh !important;
-        }
-        
-        #root {
-          background: #f9fafb !important;
-          width: 100% !important;
-          min-height: 100vh !important;
-        }
-        
-        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@300;400;600;800&display=swap');
-        
-        .font-mono { font-family: 'Space Mono', monospace; }
-        .font-display { font-family: 'Work Sans', sans-serif; font-weight: 800; }
-        
-        .card-hover {
-          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .card-hover:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
-        }
-        
-        input:focus {
-          outline: none;
-          box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-        }
-        
-        .stat-card {
-          background: linear-gradient(135deg, rgba(59, 130, 246, 0.04) 0%, rgba(37, 99, 235, 0.02) 100%);
-          border: 1px solid rgba(59, 130, 246, 0.15);
-        }
-        
-        .animate-fade-in {
-          animation: fadeIn 0.5s ease-in;
-        }
-        
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* 📱 MOBILE OPTIMIZATIONS */
-        @media (max-width: 768px) {
-          /* Inputs e Buttons maiores para mobile */
-          input, select, textarea {
-            min-height: 48px !important;
-            font-size: 16px !important;
-            padding: 12px 16px !important;
-          }
-          
-          button {
-            min-height: 48px !important;
-            font-size: 14px !important;
-            padding: 12px 16px !important;
-          }
-          
-          /* Grid sempre 1 coluna no mobile */
-          .grid {
-            grid-template-columns: 1fr !important;
-          }
-          
-          /* Reduzir padding geral */
-          .max-w-7xl {
-            padding-left: 12px !important;
-            padding-right: 12px !important;
-          }
-          
-          .py-6, .py-8 {
-            padding-top: 16px !important;
-            padding-bottom: 16px !important;
-          }
-          
-          .p-6, .p-5 {
-            padding: 12px !important;
-          }
-          
-          /* Textos menores */
-          .text-3xl { font-size: 1.5rem !important; }
-          .text-2xl { font-size: 1.25rem !important; }
-          .text-xl { font-size: 1.125rem !important; }
-          .text-lg { font-size: 1rem !important; }
-          
-          /* Gaps reduzidos */
-          .gap-6 { gap: 12px !important; }
-          .gap-4 { gap: 8px !important; }
-          
-          /* Touch feedback */
-          button:active {
-            transform: scale(0.97);
-            opacity: 0.8;
-          }
-          
-          input:focus, select:focus, textarea:focus {
-            outline: 2px solid #3b82f6;
-            outline-offset: 2px;
-          }
-          
-          /* Header compacto */
-          .py-6 { padding-top: 12px !important; padding-bottom: 12px !important; }
-          
-          /* Tabs scrolláveis */
-          .flex.gap-1 {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-          }
-          
-          .flex.gap-1::-webkit-scrollbar {
-            display: none;
-          }
-        }
-        
-        /* Scrollbar hide - para o menu mobile */
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-          -webkit-overflow-scrolling: touch;
-        }
-        
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-
-        /* Melhorias gerais de toque */
-        * {
-          -webkit-tap-highlight-color: rgba(59, 130, 246, 0.2);
-        }
-        
-        body {
-          -webkit-overflow-scrolling: touch;
-        }
-      `}</style>
-
-      {/* Header */}
-      <div className="border-b border-gray-200 bg-white/50 backdrop-blur-xl sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 md:py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
-                <Calculator className="w-7 h-7" />
-              </div>
-              <div>
-                <h1 className="font-display text-3xl tracking-tight">CÁLCULO DE HORAS</h1>
-                <p className="text-gray-600 text-sm mt-1 font-light">Sistema de Gestão de Custos e Produtividade</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 text-sm">
-              <div className="px-4 py-2 bg-white rounded-lg border border-gray-300">
-                <span className="text-gray-600">Total Geral:</span>
-                <span className="ml-2 font-mono font-bold text-blue-800">{formatMoeda(totalGeralCustos)}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Navigation Tabs */}
-      <div className="border-b border-gray-200 bg-white/30">
-        <div className="max-w-7xl mx-auto px-3 md:px-6">
-          <div className="flex gap-1 flex-nowrap overflow-x-auto whitespace-nowrap scrollbar-hide">
-            {[
-              { id: 'custos', label: 'Custos Fixos', icon: DollarSign },
-              { id: 'funcionarios', label: 'Funcionários', icon: Users },
-              { id: 'calculo', label: 'Cálculo de Horas', icon: Clock },
-              { id: 'resumo', label: 'Resumo Geral', icon: TrendingUp }
-            ].map(tab => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 md:px-6 py-3 md:py-4 flex-shrink-0 font-semibold transition-all relative ${
-                  activeTab === tab.id 
-                    ? 'text-blue-800 bg-white' 
-                    : 'text-gray-700 hover:text-gray-900 hover:bg-white/50'
-                }`}
-              >
-                <tab.icon className="w-4 h-4" />
-                <span className="text-sm md:text-base whitespace-nowrap">{tab.label}</span>
-                {activeTab === tab.id && (
-                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500"></div>
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 md:py-8">
-        {/* Tab: Custos Fixos */}
-        {activeTab === 'custos' && (
-          <div className="animate-fade-in space-y-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-2xl font-display">Custos Fixos Mensais</h2>
-                <p className="text-gray-600 mt-1">Gerencie todos os custos operacionais fixos</p>
-              </div>
-              <button
-                onClick={adicionarCusto}
-                className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg font-semibold transition-colors"
-              >
-                <Plus className="w-5 h-5" />
-                Adicionar Custo
-              </button>
-            </div>
-
-            <div className="grid gap-3">
-              {custosFixos.map((custo, idx) => (
-                <div
-                  key={custo.id}
-                  className="bg-white border border-gray-200 rounded-lg p-5 card-hover"
-                  style={{ animationDelay: `${idx * 0.03}s` }}
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="flex-1 grid grid-cols-2 gap-4">
-                      <input
-                        type="text"
-                        value={custo.nome}
-                        onChange={(e) => atualizarCusto(custo.id, 'nome', e.target.value)}
-                        className="bg-white border border-gray-300 rounded-lg text-gray-900 px-4 py-2.5 focus:border-blue-500 transition-all"
-                        placeholder="Nome do custo"
-                      />
-                      <input
-                        type="text"
-                        value={obterValorCusto(custo.id)}
-                        onChange={(e) => atualizarCusto(custo.id, 'valor', e.target.value)}
-                        onBlur={() => limparValorTemp(`custo-${custo.id}`)}
-                        className="bg-white border border-gray-300 rounded-lg text-gray-900 px-4 py-2.5 font-mono focus:border-blue-500 transition-all"
-                        placeholder="0,00"
-                      />
-                    </div>
-                    <button
-                      onClick={() => removerCusto(custo.id)}
-                      className="p-2.5 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition-colors"
-                    >
-                      <Trash2 className="w-5 h-5" />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="stat-card rounded-xl p-4 md:p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-gray-600 text-sm font-semibold uppercase tracking-wide">Total Custos Fixos</p>
-                  <p className="text-4xl font-display mt-2">{formatMoeda(totalCustosFixos)}</p>
-                </div>
-                <DollarSign className="w-12 h-12 text-blue-800 opacity-50" />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Tab: Funcionários */}
-        {activeTab === 'funcionarios' && (
-          <div className="animate-fade-in space-y-8">
-            {/* Info sobre INSS */}
-            <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 md:p-5">
-              <div className="flex items-start gap-3">
-                <DollarSign className="w-5 h-5 text-blue-800 mt-1" />
-                <div>
-                  <h4 className="font-semibold text-blue-800 mb-2">Faixas de INSS 2024/2025</h4>
-                  <div className="grid md:grid-cols-4 gap-4 text-sm">
-                    <div>
-                      <span className="text-gray-600">Até R$ 1.621,00</span>
-                      <p className="text-blue-800 font-semibold">7,5%</p>
-                    </div>
-                    <div>
-                      <span className="text-gray-600">R$ 1.621,01 - R$ 2.902,84</span>
-                      <p className="text-blue-800 font-semibold">9%</p>
-                    </div>
-                    <div>
-                      <span className="text-gray-600">R$ 2.902,85 - R$ 4.354,27</span>
-                      <p className="text-blue-800 font-semibold">12%</p>
-                    </div>
-                    <div>
-                      <span className="text-gray-600">R$ 4.354,28 - R$ 8.475,55</span>
-                      <p className="text-blue-800 font-semibold">14%</p>
-                    </div>
-                  </div>
-                  <p className="text-xs text-gray-700 mt-2">Cálculo progressivo (similar ao IR)</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Info sobre Encargos */}
-            <div className="bg-green-50 border border-green-200 rounded-xl p-3 md:p-5">
-              <div className="flex items-start gap-3">
-                <TrendingUp className="w-5 h-5 text-green-800 mt-1" />
-                <div>
-                  <h4 className="font-semibold text-green-800 mb-2">Cálculo de Encargos Trabalhistas</h4>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    <span className="text-yellow-800 font-semibold">Encargos aplicados sobre Salário Base:</span> 13º salário, Férias (1/3), INSS e FGTS (8%)
-                  </p>
-                  <p className="text-sm text-gray-600 leading-relaxed mt-1">
-                    <span className="text-green-800 font-semibold">Extras e Auxílios:</span> Somados ao custo total SEM incidência de encargos
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Botão para adicionar categoria */}
-            <div className="flex justify-end">
-              <button
-                onClick={() => setMostrarFormCategoria(!mostrarFormCategoria)}
-                className="flex items-center gap-2 px-5 py-2.5 bg-white hover:bg-gray-100 border border-gray-300 rounded-lg font-semibold transition-colors"
-              >
-                <Plus className="w-4 h-4" />
-                Nova Categoria
-              </button>
-            </div>
-
-            {/* Formulário de nova categoria */}
-            {mostrarFormCategoria && (
-              <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-4 md:p-6">
-                <h3 className="text-lg font-display mb-4">Adicionar Nova Categoria</h3>
-                <div className="grid md:grid-cols-4 gap-4">
-                  <div className="md:col-span-2">
-                    <label className="text-sm text-gray-600 block mb-2">Nome da Categoria</label>
-                    <input
-                      type="text"
-                      value={novaCategoria.nome}
-                      onChange={(e) => setNovaCategoria({ ...novaCategoria, nome: e.target.value })}
-                      className="w-full bg-white border border-gray-300 rounded-lg text-gray-900 px-4 py-2.5 focus:border-blue-500 transition-all"
-                      placeholder="Ex: Instalação, Manutenção..."
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm text-gray-600 block mb-2">Cor</label>
-                    <select
-                      value={novaCategoria.cor}
-                      onChange={(e) => setNovaCategoria({ ...novaCategoria, cor: e.target.value })}
-                      className="w-full bg-white border border-gray-300 rounded-lg text-gray-900 px-4 py-2.5 focus:border-blue-500 transition-all"
-                    >
-                      <option value="red">Vermelho</option>
-                      <option value="orange">Laranja</option>
-                      <option value="yellow">Amarelo</option>
-                      <option value="green">Verde</option>
-                      <option value="blue">Azul</option>
-                      <option value="indigo">Índigo</option>
-                      <option value="violet">Violeta</option>
-                      <option value="purple">Roxo</option>
-                      <option value="pink">Rosa</option>
-                      <option value="cyan">Ciano</option>
-                    </select>
-                  </div>
-                  <div className="flex items-end gap-2">
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={novaCategoria.rateado}
-                        onChange={(e) => setNovaCategoria({ ...novaCategoria, rateado: e.target.checked })}
-                        className="w-4 h-4 rounded border-gray-300 bg-white"
-                      />
-                      <span className="text-sm text-gray-600">Rateado</span>
-                    </label>
-                  </div>
-                </div>
-                <div className="flex gap-3 mt-4">
-                  <button
-                    onClick={adicionarCategoria}
-                    className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 rounded-lg font-semibold transition-colors"
-                  >
-                    Adicionar
-                  </button>
-                  <button
-                    onClick={() => {
-                      setMostrarFormCategoria(false);
-                      setNovaCategoria({ nome: '', cor: 'indigo', rateado: false });
-                    }}
-                    className="px-5 py-2.5 bg-white hover:bg-gray-100 border border-gray-300 rounded-lg font-semibold transition-colors"
-                  >
-                    Cancelar
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {categorias.map(categoria => (
-              <div key={categoria.id} className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Building className={`w-6 h-6 text-${categoria.cor}-500`} />
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-xl font-display">{categoria.nome}</h3>
-                        {categoria.rateado && (
-                          <span className="text-xs px-2 py-1 bg-blue-100 text-blue-900 rounded-full border border-blue-300">
-                            Rateado
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-gray-600 text-sm">
-                        {funcionarios[categoria.id] ? funcionarios[categoria.id].length : 0} funcionário(s) • 
-                        {formatMoeda(calcularCustosSetor(categoria.id))}
-                        {categoria.rateado && pesoRateio[categoria.id] && 
-                          ` (Peso: ${(pesoRateio[categoria.id] * 100).toFixed(1)}%)`
-                        }
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => adicionarFuncionario(categoria.id)}
-                      className={`flex items-center gap-2 px-4 py-2 bg-${categoria.cor}-600 hover:bg-${categoria.cor}-500 rounded-lg font-semibold transition-colors text-sm`}
-                    >
-                      <Plus className="w-4 h-4" />
-                      Adicionar
-                    </button>
-                    {!['socio', 'administrativo', 'pcp', 'comercial', 'marceneiro', 'auxiliar'].includes(categoria.id) && (
-                      <button
-                        onClick={() => removerCategoria(categoria.id)}
-                        className="p-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition-colors"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    )}
-                  </div>
-                </div>
-
-                <div className="grid gap-3">
-                  {funcionarios[categoria.id] && funcionarios[categoria.id].map((func, idx) => (
-                    <div
-                      key={func.id}
-                      className="bg-white border border-gray-200 rounded-lg p-5 card-hover"
-                    >
-                      <div className="flex items-center gap-4">
-                        <div className="flex-1 grid grid-cols-4 gap-4">
-                          <input
-                            type="text"
-                            value={func.nome}
-                            onChange={(e) => atualizarFuncionario(categoria.id, func.id, 'nome', e.target.value)}
-                            className="bg-white border border-gray-300 rounded-lg text-gray-900 px-4 py-2.5 focus:border-blue-500 transition-all"
-                            placeholder="Nome"
-                          />
-                          <div>
-                            <label className="text-xs text-gray-700 block mb-1.5 flex items-center gap-1">
-                              Salário Base
-                              <span className="text-[10px] px-1.5 py-0.5 bg-yellow-100 text-yellow-900 border border-yellow-300 rounded">com encargos</span>
-                            </label>
-                            <input
-                              type="text"
-                              value={obterValorInput(categoria.id, func.id, 'salarioBase')}
-                              onChange={(e) => atualizarFuncionario(categoria.id, func.id, 'salarioBase', e.target.value)}
-                              onBlur={() => limparValorTemp(`${categoria.id}-${func.id}-salarioBase`)}
-                              className="w-full bg-white border border-gray-300 rounded-lg text-gray-900 px-4 py-2.5 font-mono focus:border-blue-500 transition-all"
-                              placeholder="0,00"
-                            />
-                          </div>
-                          <div>
-                            <label className="text-xs text-gray-700 block mb-1.5 flex items-center gap-1">
-                              Extras 
-                              <span className="text-[10px] px-1.5 py-0.5 bg-green-100 text-green-900 border border-green-300 rounded">sem encargos</span>
-                            </label>
-                            <input
-                              type="text"
-                              value={obterValorInput(categoria.id, func.id, 'extras')}
-                              onChange={(e) => atualizarFuncionario(categoria.id, func.id, 'extras', e.target.value)}
-                              onBlur={() => limparValorTemp(`${categoria.id}-${func.id}-extras`)}
-                              className="w-full bg-white border border-gray-300 rounded-lg text-gray-900 px-4 py-2.5 font-mono focus:border-blue-500 transition-all"
-                              placeholder="0,00"
-                            />
-                          </div>
-                          <div>
-                            <label className="text-xs text-gray-700 block mb-1.5 flex items-center gap-1">
-                              Auxílio
-                              <span className="text-[10px] px-1.5 py-0.5 bg-green-100 text-green-900 border border-green-300 rounded">sem encargos</span>
-                            </label>
-                            <input
-                              type="text"
-                              value={obterValorInput(categoria.id, func.id, 'auxilio')}
-                              onChange={(e) => atualizarFuncionario(categoria.id, func.id, 'auxilio', e.target.value)}
-                              onBlur={() => limparValorTemp(`${categoria.id}-${func.id}-auxilio`)}
-                              className="w-full bg-white border border-gray-300 rounded-lg text-gray-900 px-4 py-2.5 font-mono focus:border-blue-500 transition-all"
-                              placeholder="0,00"
-                            />
-                          </div>
-                        </div>
-                        <div className="text-right min-w-[180px]">
-                          <div className="bg-white/50 rounded-lg p-3 space-y-1.5">
-                            <div className="flex justify-between text-xs">
-                              <span className="text-gray-700">Salário Base:</span>
-                              <span className="font-mono">{formatMoeda(func.salarioBase)}</span>
-                            </div>
-                            <div className="flex justify-between text-xs">
-                              <span className="text-gray-700">Encargos:</span>
-                              <span className="font-mono text-yellow-800">
-                                {formatMoeda(
-                                  (func.salarioBase / 12) + // 13º
-                                  ((func.salarioBase / 3) / 12) + // férias
-                                  calcularINSS(func.salarioBase) + // INSS
-                                  calcularINSS((func.salarioBase / 12) + ((func.salarioBase / 3) / 12)) + // INSS 13º/férias
-                                  (func.salarioBase * 0.08) // FGTS
-                                )}
-                              </span>
-                            </div>
-                            {func.extras > 0 && (
-                              <div className="flex justify-between text-xs">
-                                <span className="text-gray-700">Extras (sem enc.):</span>
-                                <span className="font-mono text-green-800">+{formatMoeda(func.extras)}</span>
-                              </div>
-                            )}
-                            {func.auxilio > 0 && (
-                              <div className="flex justify-between text-xs">
-                                <span className="text-gray-700">Auxílio (sem enc.):</span>
-                                <span className="font-mono text-green-800">+{formatMoeda(func.auxilio)}</span>
-                              </div>
-                            )}
-                            <div className="flex justify-between pt-1.5 border-t border-gray-300">
-                              <span className="text-gray-600 font-semibold text-xs">TOTAL:</span>
-                              <span className="font-mono text-base font-bold text-blue-800">{formatMoeda(calcularCustoFuncionario(func))}</span>
-                            </div>
-                          </div>
-                        </div>
-                        <button
-                          onClick={() => removerFuncionario(categoria.id, func.id)}
-                          className="p-2.5 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition-colors"
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                  {(!funcionarios[categoria.id] || funcionarios[categoria.id].length === 0) && (
-                    <div className="bg-white/50 border border-gray-200 border-dashed rounded-lg p-8 text-center">
-                      <Users className="w-12 h-12 text-gray-700 mx-auto mb-3" />
-                      <p className="text-gray-700">Nenhum funcionário cadastrado nesta categoria</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Tab: Cálculo de Horas */}
-        {activeTab === 'calculo' && (
-          <div className="animate-fade-in space-y-6">
-            <div>
-              <h2 className="text-2xl font-display">Cálculo de Custo por Hora</h2>
-              <p className="text-gray-600 mt-1">Custos diretos + rateio proporcional de custos indiretos</p>
-            </div>
-
-            {/* Configurações de Horas */}
-            <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-4 md:p-6">
-              <h3 className="text-lg font-display mb-4 flex items-center gap-2">
-                <Clock className="w-5 h-5 text-blue-800" />
-                Configurações de Horas
-              </h3>
-              <div className="grid md:grid-cols-3 gap-4">
-                <div>
-                  <label className="text-sm text-gray-600 block mb-2">Horas Contratadas/Mês</label>
-                  <input
-                    type="text"
-                    value={obterValorHora('contratadas', horasContratadas)}
-                    onChange={(e) => atualizarHorasContratadas(e.target.value)}
-                    onBlur={() => limparValorTemp('hora-contratadas')}
-                    className="w-full bg-white border border-gray-300 rounded-lg text-gray-900 px-4 py-2.5 font-mono text-xl font-bold focus:border-blue-500 transition-all"
-                    placeholder="180,00"
-                  />
-                </div>
-                <div>
-                  <label className="text-sm text-gray-600 block mb-2 flex items-center gap-2">
-                    Horas Ociosas/Dia
-                    <span className="group relative">
-                      <svg className="w-4 h-4 text-gray-700 cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="10" strokeWidth="2"/>
-                        <path d="M12 16v-4" strokeWidth="2"/>
-                        <circle cx="12" cy="8" r="0.5" fill="currentColor"/>
-                      </svg>
-                      <span className="invisible group-hover:visible absolute left-0 top-6 w-64 bg-white border border-gray-300 rounded-lg p-3 text-xs text-gray-900 shadow-xl z-10">
-                        Desconta tempo improdutivo apenas dos setores que geram receita
-                      </span>
-                    </span>
-                  </label>
-                  <input
-                    type="text"
-                    value={obterValorHora('ociosas', horasOciosas)}
-                    onChange={(e) => atualizarHorasOciosas(e.target.value)}
-                    onBlur={() => limparValorTemp('hora-ociosas')}
-                    className="w-full bg-white border border-gray-300 rounded-lg text-gray-900 px-4 py-2.5 font-mono text-xl font-bold focus:border-blue-500 transition-all"
-                    placeholder="0,50"
-                  />
-                </div>
-                <div>
-                  <label className="text-sm text-gray-600 block mb-2">Dias Úteis/Mês</label>
-                  <input
-                    type="text"
-                    value={obterValorHora('dias', diasMedio)}
-                    onChange={(e) => atualizarDiasMedio(e.target.value)}
-                    onBlur={() => limparValorTemp('hora-dias')}
-                    className="w-full bg-white border border-gray-300 rounded-lg text-gray-900 px-4 py-2.5 font-mono text-xl font-bold focus:border-blue-500 transition-all"
-                    placeholder="21,00"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Info sobre Rateio */}
-            <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 md:p-5">
-              <div className="flex items-start gap-3">
-                <TrendingUp className="w-5 h-5 text-blue-800 mt-1" />
-                <div className="w-full">
-                  <h4 className="font-semibold text-blue-800 mb-2">Rateio Proporcional de Custos</h4>
-                  <p className="text-sm text-gray-600 leading-relaxed mb-3">
-                    Os custos fixos e das categorias não-rateadas ({formatMoeda(custosNaoRateados)}) - incluindo Societário, Administrativo, PCP e Comercial - são distribuídos 
-                    proporcionalmente entre as categorias rateadas com base no peso salarial:
-                  </p>
-                  <div className="grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                    {categoriasRateadas.map(cat => (
-                      <div key={cat.id}>
-                        <span className={`text-${cat.cor}-400 font-semibold`}>{cat.nome}:</span> {(pesoRateio[cat.id] * 100).toFixed(1)}%
-                        <span className="text-gray-700 text-sm ml-2">({formatMoeda(custosRateadosPorCategoria[cat.id])})</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="grid lg:grid-cols-2 gap-6">
-              {categoriasRateadas.map(categoria => {
-                const resultado = resultadosPorCategoria[categoria.id];
-                if (!resultado) return null;
-                
-                return (
-                  <div key={categoria.id} className="bg-white border border-gray-200 rounded-xl shadow-sm p-4 md:p-6">
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className={`w-3 h-3 rounded-full bg-${categoria.cor}-500`}></div>
-                      <h3 className="text-xl font-display">{categoria.nome}</h3>
-                    </div>
-                    
-                    <div className="space-y-4">
-                      <div className="flex justify-between items-center py-3 border-b border-gray-200">
-                        <span className="text-gray-600">Funcionários</span>
-                        <span className="font-mono font-bold">{resultado.qtdFuncionarios}</span>
-                      </div>
-                      <div className="flex justify-between items-center py-3 border-b border-gray-200">
-                        <span className="text-gray-600">Horas Disponíveis</span>
-                        <span className="font-mono font-bold">{resultado.horasDisponiveis}h</span>
-                      </div>
-                      <div className="flex justify-between items-center py-3 border-b border-gray-200">
-                        <span className="text-gray-600">Horas Úteis</span>
-                        <span className="font-mono font-bold">{resultado.horasUteis.toFixed(1)}h</span>
-                      </div>
-                      
-                      {/* Breakdown de Custos */}
-                      <div className="bg-white/50 rounded-lg p-4 space-y-2 mt-4">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Custo Direto (Folha)</span>
-                          <span className="font-mono">{formatMoeda(resultado.custoDireto)}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Custo Rateado</span>
-                          <span className="font-mono">{formatMoeda(resultado.custoRateado)}</span>
-                        </div>
-                        <div className="flex justify-between font-semibold pt-2 border-t border-gray-300">
-                          <span className="text-gray-900">Custo Total</span>
-                          <span className="font-mono">{formatMoeda(resultado.custoTotal)}</span>
-                        </div>
-                      </div>
-
-                      <div className="flex justify-between items-center py-4 bg-white/50 rounded-lg px-4 mt-4">
-                        <span className="text-gray-900 font-semibold">CUSTO/HORA</span>
-                        <span className={`font-mono text-2xl font-bold text-${categoria.cor}-400`}>
-                          {formatMoeda(resultado.custoHora)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* Tab: Resumo Geral */}
-        {activeTab === 'resumo' && (
-          <div className="animate-fade-in space-y-6">
-            <div>
-              <h2 className="text-2xl font-display">Resumo Geral</h2>
-              <p className="text-gray-600 mt-1">Visão consolidada de todos os custos e indicadores</p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
-              <div className="stat-card rounded-xl p-3 md:p-5">
-                <p className="text-gray-600 text-sm font-semibold mb-2">Custos Fixos</p>
-                <p className="text-2xl font-display">{formatMoeda(totalCustosFixos)}</p>
-              </div>
-              <div className="stat-card rounded-xl p-3 md:p-5">
-                <p className="text-gray-600 text-sm font-semibold mb-2">Societário</p>
-                <p className="text-2xl font-display">{formatMoeda(calcularCustosSetor('socio'))}</p>
-              </div>
-              <div className="stat-card rounded-xl p-3 md:p-5">
-                <p className="text-gray-600 text-sm font-semibold mb-2">Admin + PCP + Comercial</p>
-                <p className="text-2xl font-display">{formatMoeda(custoAdmin + custoPCP + custoComercial)}</p>
-              </div>
-              <div className="stat-card rounded-xl p-3 md:p-5">
-                <p className="text-gray-600 text-sm font-semibold mb-2">Custos Produção</p>
-                <p className="text-gray-700 text-xs mb-1">Marceneiro e Auxiliares</p>
-                <p className="text-2xl font-display">{formatMoeda(totalCustosProducao)}</p>
-              </div>
-              <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl p-3 md:p-5">
-                <p className="text-blue-900 text-sm font-semibold mb-2">TOTAL GERAL</p>
-                <p className="text-3xl font-display text-white">{formatMoeda(totalGeralCustos)}</p>
-              </div>
-            </div>
-
-            {/* Categorias Customizadas */}
-            {custosCategoriasCustom > 0 && (
-              <div>
-                <h3 className="text-lg font-display mb-3 text-gray-900">Outras Categorias</h3>
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {categorias
-                    .filter(cat => !['socio', 'administrativo', 'pcp', 'comercial', 'marceneiro', 'auxiliar'].includes(cat.id))
-                    .map(cat => {
-                      const custo = calcularCustosSetor(cat.id);
-                      if (custo === 0) return null;
-                      return (
-                        <div key={cat.id} className="stat-card rounded-xl p-4">
-                          <div className="flex items-center gap-2 mb-2">
-                            <div className={`w-2 h-2 rounded-full bg-${cat.cor}-500`}></div>
-                            <p className="text-gray-600 text-sm font-semibold">{cat.nome}</p>
-                          </div>
-                          <p className="text-xl font-display">{formatMoeda(custo)}</p>
-                          {cat.rateado && (
-                            <p className="text-xs text-gray-700 mt-1">Categoria rateada</p>
-                          )}
-                        </div>
-                      );
-                    })}
-                </div>
-              </div>
-            )}
-
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-4 md:p-6">
-                <h3 className="text-lg font-display mb-4 flex items-center gap-2">
-                  <Users className="w-5 h-5 text-blue-800" />
-                  Custos por Categoria
-                </h3>
-                <div className="space-y-3 max-h-96 overflow-y-auto">
-                  {categorias.map(cat => (
-                    <div key={cat.id} className="flex items-center justify-between py-2">
-                      <div className="flex items-center gap-2">
-                        <div className={`w-2 h-2 rounded-full bg-${cat.cor}-500`}></div>
-                        <span className="text-gray-900">{cat.nome}</span>
-                        {cat.rateado && pesoRateio[cat.id] !== undefined && (
-                          <span className="text-xs text-gray-700">({(pesoRateio[cat.id] * 100).toFixed(0)}%)</span>
-                        )}
-                      </div>
-                      <span className="font-mono font-bold">{formatMoeda(calcularCustosSetor(cat.id))}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-4 md:p-6">
-                <h3 className="text-lg font-display mb-4 flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-blue-800" />
-                  Custo/Hora com Rateio
-                </h3>
-                <div className="space-y-4 max-h-96 overflow-y-auto">
-                  {categoriasRateadas.map(cat => {
-                    const resultado = resultadosPorCategoria[cat.id];
-                    if (!resultado) return null;
-                    
-                    return (
-                      <div key={cat.id} className="bg-white/30 rounded-lg p-4">
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center gap-2">
-                            <div className={`w-2 h-2 rounded-full bg-${cat.cor}-500`}></div>
-                            <span className="text-gray-900 font-semibold">{cat.nome}</span>
-                          </div>
-                          <span className={`font-mono text-xl font-bold text-${cat.cor}-400`}>
-                            {formatMoeda(resultado.custoHora)}
-                          </span>
-                        </div>
-                        <div className="grid grid-cols-2 gap-4 text-sm">
-                          <div>
-                            <span className="text-gray-700">Funcionários:</span>
-                            <span className="ml-2 font-mono">{resultado.qtdFuncionarios}</span>
-                          </div>
-                          <div>
-                            <span className="text-gray-700">Horas úteis:</span>
-                            <span className="ml-2 font-mono">{resultado.horasUteis.toFixed(0)}h</span>
-                          </div>
-                          <div>
-                            <span className="text-gray-700">Custo direto:</span>
-                            <span className="ml-2 font-mono text-xs">{formatMoeda(resultado.custoDireto)}</span>
-                          </div>
-                          <div>
-                            <span className="text-gray-700">Rateado:</span>
-                            <span className="ml-2 font-mono text-xs">{formatMoeda(resultado.custoRateado)}</span>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            {/* Detalhamento do Rateio */}
-            <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-4 md:p-6">
-              <h3 className="text-lg font-display mb-4 flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-blue-800" />
-                Metodologia de Rateio
-              </h3>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <div>
-                  <p className="text-sm text-gray-600 mb-2">Custos Não-Rateados Total</p>
-                  <p className="text-2xl font-mono font-bold text-blue-800">{formatMoeda(custosNaoRateados)}</p>
-                  <p className="text-xs text-gray-700 mt-1">Fixos + Societário + Admin + PCP + Comercial + Outras</p>
-                </div>
-                {categoriasRateadas.map(cat => (
-                  <div key={cat.id}>
-                    <p className="text-sm text-gray-600 mb-2">Salário Base {cat.nome}</p>
-                    <p className={`text-2xl font-mono font-bold text-${cat.cor}-400`}>
-                      {formatMoeda(salarioBasePorCategoria[cat.id] || 0)}
-                    </p>
-                    <p className="text-xs text-gray-700 mt-1">
-                      Peso: {((pesoRateio[cat.id] || 0) * 100).toFixed(1)}%
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Botão Exportar PDF */}
-            <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-4 md:p-6">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                <div className="flex-1">
-                  <h3 className="text-lg font-display mb-2 flex items-center gap-2">
-                    <Download className="w-5 h-5 text-blue-800" />
-                    Exportar Relatório
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    Gere um PDF completo com todos os dados calculados, incluindo detalhamento por categoria,
-                    custos de produção e metodologia de rateio.
-                  </p>
-                </div>
-                <button
-                  onClick={gerarPDF}
-                  className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all hover:scale-105 active:scale-95"
-                >
-                  <Download className="w-5 h-5" />
-                  Baixar PDF
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
+        fontSize
