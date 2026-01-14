@@ -6,12 +6,10 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  /* Força o navegador a usar modo CLARO sempre */
-  color-scheme: light; 
   
-  /* Cores Base do Tema Clean */
-  color: #111827; /* Texto quase preto (confortável) */
+  /* Configuração essencial de cores */
+  color-scheme: light;
+  color: #111827;           /* Texto escuro */
   background-color: #f9fafb; /* Fundo Cinza Gelo (Gray-50) */
 
   font-synthesis: none;
@@ -20,19 +18,19 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* AQUI ESTAVA O PROBLEMA: Removemos o flex e o center */
 body {
   margin: 0;
-  display: flex;
-  place-items: start; /* Alinha o site no topo, não forçado no centro */
-  justify-content: center;
-  min-width: 320px;
+  padding: 0;
+  width: 100%;
   min-height: 100vh;
+  background-color: #f9fafb; /* Garante que não sobra preto */
 }
 
+/* AQUI TAMBÉM: Removemos o max-width */
 #root {
   width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
+  margin: 0;
   padding: 2rem;
-  /* Removemos o text-align center para não centralizar textos de tabelas sem querer */
+  /* Agora o site vai usar a largura total da tela */
 }
