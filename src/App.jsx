@@ -596,13 +596,13 @@ export default function CalculoHorasApp() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans">
+    <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@300;400;600;800&display=swap');
         
         body { 
           font-family: 'Work Sans', sans-serif;
-          background: #09090b;
+          background: #f9fafb;
         }
         
         .font-mono { font-family: 'Space Mono', monospace; }
@@ -623,8 +623,8 @@ export default function CalculoHorasApp() {
         }
         
         .stat-card {
-          background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%);
-          border: 1px solid rgba(59, 130, 246, 0.2);
+          background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(37, 99, 235, 0.02) 100%);
+          border: 1px solid rgba(59, 130, 246, 0.15);
         }
         
         .animate-fade-in {
@@ -718,7 +718,7 @@ export default function CalculoHorasApp() {
       `}</style>
 
       {/* Header */}
-      <div className="border-b border-zinc-800 bg-zinc-900/50 backdrop-blur-xl sticky top-0 z-50">
+      <div className="border-b border-gray-200 bg-white/95 backdrop-blur-xl sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -727,13 +727,13 @@ export default function CalculoHorasApp() {
               </div>
               <div>
                 <h1 className="font-display text-3xl tracking-tight">CÁLCULO DE HORAS</h1>
-                <p className="text-zinc-400 text-sm mt-1 font-light">Sistema de Gestão de Custos e Produtividade</p>
+                <p className="text-gray-600 text-sm mt-1 font-light">Sistema de Gestão de Custos e Produtividade</p>
               </div>
             </div>
             <div className="flex items-center gap-2 text-sm">
-              <div className="px-4 py-2 bg-zinc-800 rounded-lg border border-zinc-700">
-                <span className="text-zinc-400">Total Geral:</span>
-                <span className="ml-2 font-mono font-bold text-blue-400">{formatMoeda(totalGeralCustos)}</span>
+              <div className="px-4 py-2 bg-gray-100 rounded-lg border border-gray-300">
+                <span className="text-gray-600">Total Geral:</span>
+                <span className="ml-2 font-mono font-bold text-blue-600">{formatMoeda(totalGeralCustos)}</span>
               </div>
             </div>
           </div>
@@ -741,7 +741,7 @@ export default function CalculoHorasApp() {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="border-b border-zinc-800 bg-zinc-900/30">
+      <div className="border-b border-gray-200 bg-white/95 backdrop-blur-xl sticky top-[97px] z-40 shadow-sm">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex gap-1">
             {[
@@ -755,8 +755,8 @@ export default function CalculoHorasApp() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 px-6 py-4 font-semibold transition-all relative ${
                   activeTab === tab.id 
-                    ? 'text-blue-400 bg-zinc-900' 
-                    : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50'
+                    ? 'text-blue-600 bg-white' 
+                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100/50'
                 }`}
               >
                 <tab.icon className="w-4 h-4" />
@@ -777,7 +777,7 @@ export default function CalculoHorasApp() {
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-2xl font-display">Custos Fixos Mensais</h2>
-                <p className="text-zinc-400 mt-1">Gerencie todos os custos operacionais fixos</p>
+                <p className="text-gray-600 mt-1">Gerencie todos os custos operacionais fixos</p>
               </div>
               <button
                 onClick={adicionarCusto}
@@ -792,7 +792,7 @@ export default function CalculoHorasApp() {
               {custosFixos.map((custo, idx) => (
                 <div
                   key={custo.id}
-                  className="bg-zinc-900 border border-zinc-800 rounded-lg p-5 card-hover"
+                  className="bg-white border border-gray-200 rounded-lg p-5 card-hover"
                   style={{ animationDelay: `${idx * 0.03}s` }}
                 >
                   <div className="flex items-center gap-4">
@@ -801,7 +801,7 @@ export default function CalculoHorasApp() {
                         type="text"
                         value={custo.nome}
                         onChange={(e) => atualizarCusto(custo.id, 'nome', e.target.value)}
-                        className="bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 focus:border-blue-500 transition-all"
+                        className="bg-white border border-gray-300 rounded-lg px-4 py-2.5 focus:border-blue-500 transition-all"
                         placeholder="Nome do custo"
                       />
                       <input
@@ -809,7 +809,7 @@ export default function CalculoHorasApp() {
                         value={obterValorCusto(custo.id)}
                         onChange={(e) => atualizarCusto(custo.id, 'valor', e.target.value)}
                         onBlur={() => limparValorTemp(`custo-${custo.id}`)}
-                        className="bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 font-mono focus:border-blue-500 transition-all"
+                        className="bg-white border border-gray-300 rounded-lg px-4 py-2.5 font-mono focus:border-blue-500 transition-all"
                         placeholder="0,00"
                       />
                     </div>
@@ -827,7 +827,7 @@ export default function CalculoHorasApp() {
             <div className="stat-card rounded-xl p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-zinc-400 text-sm font-semibold uppercase tracking-wide">Total Custos Fixos</p>
+                  <p className="text-gray-600 text-sm font-semibold uppercase tracking-wide">Total Custos Fixos</p>
                   <p className="text-4xl font-display mt-2">{formatMoeda(totalCustosFixos)}</p>
                 </div>
                 <DollarSign className="w-12 h-12 text-blue-500 opacity-50" />
@@ -842,28 +842,28 @@ export default function CalculoHorasApp() {
             {/* Info sobre INSS */}
             <div className="bg-blue-900/20 border border-blue-800/30 rounded-xl p-5">
               <div className="flex items-start gap-3">
-                <DollarSign className="w-5 h-5 text-blue-400 mt-1" />
+                <DollarSign className="w-5 h-5 text-blue-600 mt-1" />
                 <div>
                   <h4 className="font-semibold text-blue-300 mb-2">Faixas de INSS 2024/2025</h4>
                   <div className="grid md:grid-cols-4 gap-4 text-sm">
                     <div>
-                      <span className="text-zinc-400">Até R$ 1.621,00</span>
-                      <p className="text-blue-400 font-semibold">7,5%</p>
+                      <span className="text-gray-600">Até R$ 1.621,00</span>
+                      <p className="text-blue-600 font-semibold">7,5%</p>
                     </div>
                     <div>
-                      <span className="text-zinc-400">R$ 1.621,01 - R$ 2.902,84</span>
-                      <p className="text-blue-400 font-semibold">9%</p>
+                      <span className="text-gray-600">R$ 1.621,01 - R$ 2.902,84</span>
+                      <p className="text-blue-600 font-semibold">9%</p>
                     </div>
                     <div>
-                      <span className="text-zinc-400">R$ 2.902,85 - R$ 4.354,27</span>
-                      <p className="text-blue-400 font-semibold">12%</p>
+                      <span className="text-gray-600">R$ 2.902,85 - R$ 4.354,27</span>
+                      <p className="text-blue-600 font-semibold">12%</p>
                     </div>
                     <div>
-                      <span className="text-zinc-400">R$ 4.354,28 - R$ 8.475,55</span>
-                      <p className="text-blue-400 font-semibold">14%</p>
+                      <span className="text-gray-600">R$ 4.354,28 - R$ 8.475,55</span>
+                      <p className="text-blue-600 font-semibold">14%</p>
                     </div>
                   </div>
-                  <p className="text-xs text-zinc-500 mt-2">Cálculo progressivo (similar ao IR)</p>
+                  <p className="text-xs text-gray-500 mt-2">Cálculo progressivo (similar ao IR)</p>
                 </div>
               </div>
             </div>
@@ -874,10 +874,10 @@ export default function CalculoHorasApp() {
                 <TrendingUp className="w-5 h-5 text-green-400 mt-1" />
                 <div>
                   <h4 className="font-semibold text-green-300 mb-2">Cálculo de Encargos Trabalhistas</h4>
-                  <p className="text-sm text-zinc-400 leading-relaxed">
+                  <p className="text-sm text-gray-600 leading-relaxed">
                     <span className="text-yellow-400 font-semibold">Encargos aplicados sobre Salário Base:</span> 13º salário, Férias (1/3), INSS e FGTS (8%)
                   </p>
-                  <p className="text-sm text-zinc-400 leading-relaxed mt-1">
+                  <p className="text-sm text-gray-600 leading-relaxed mt-1">
                     <span className="text-green-400 font-semibold">Extras e Auxílios:</span> Somados ao custo total SEM incidência de encargos
                   </p>
                 </div>
@@ -888,7 +888,7 @@ export default function CalculoHorasApp() {
             <div className="flex justify-end">
               <button
                 onClick={() => setMostrarFormCategoria(!mostrarFormCategoria)}
-                className="flex items-center gap-2 px-5 py-2.5 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-lg font-semibold transition-colors"
+                className="flex items-center gap-2 px-5 py-2.5 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-lg font-semibold transition-colors"
               >
                 <Plus className="w-4 h-4" />
                 Nova Categoria
@@ -897,25 +897,25 @@ export default function CalculoHorasApp() {
 
             {/* Formulário de nova categoria */}
             {mostrarFormCategoria && (
-              <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+              <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
                 <h3 className="text-lg font-display mb-4">Adicionar Nova Categoria</h3>
                 <div className="grid md:grid-cols-4 gap-4">
                   <div className="md:col-span-2">
-                    <label className="text-sm text-zinc-400 block mb-2">Nome da Categoria</label>
+                    <label className="text-sm text-gray-600 block mb-2">Nome da Categoria</label>
                     <input
                       type="text"
                       value={novaCategoria.nome}
                       onChange={(e) => setNovaCategoria({ ...novaCategoria, nome: e.target.value })}
-                      className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 focus:border-blue-500 transition-all"
+                      className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5 focus:border-blue-500 transition-all"
                       placeholder="Ex: Instalação, Manutenção..."
                     />
                   </div>
                   <div>
-                    <label className="text-sm text-zinc-400 block mb-2">Cor</label>
+                    <label className="text-sm text-gray-600 block mb-2">Cor</label>
                     <select
                       value={novaCategoria.cor}
                       onChange={(e) => setNovaCategoria({ ...novaCategoria, cor: e.target.value })}
-                      className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 focus:border-blue-500 transition-all"
+                      className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5 focus:border-blue-500 transition-all"
                     >
                       <option value="red">Vermelho</option>
                       <option value="orange">Laranja</option>
@@ -935,9 +935,9 @@ export default function CalculoHorasApp() {
                         type="checkbox"
                         checked={novaCategoria.rateado}
                         onChange={(e) => setNovaCategoria({ ...novaCategoria, rateado: e.target.checked })}
-                        className="w-4 h-4 rounded border-zinc-700 bg-zinc-800"
+                        className="w-4 h-4 rounded border-gray-300 bg-gray-100"
                       />
-                      <span className="text-sm text-zinc-400">Rateado</span>
+                      <span className="text-sm text-gray-600">Rateado</span>
                     </label>
                   </div>
                 </div>
@@ -953,7 +953,7 @@ export default function CalculoHorasApp() {
                       setMostrarFormCategoria(false);
                       setNovaCategoria({ nome: '', cor: 'indigo', rateado: false });
                     }}
-                    className="px-5 py-2.5 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-lg font-semibold transition-colors"
+                    className="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-lg font-semibold transition-colors"
                   >
                     Cancelar
                   </button>
@@ -970,12 +970,12 @@ export default function CalculoHorasApp() {
                       <div className="flex items-center gap-2">
                         <h3 className="text-xl font-display">{categoria.nome}</h3>
                         {categoria.rateado && (
-                          <span className="text-xs px-2 py-1 bg-blue-900/30 text-blue-400 rounded-full border border-blue-800/30">
+                          <span className="text-xs px-2 py-1 bg-blue-900/30 text-blue-600 rounded-full border border-blue-800/30">
                             Rateado
                           </span>
                         )}
                       </div>
-                      <p className="text-zinc-400 text-sm">
+                      <p className="text-gray-600 text-sm">
                         {funcionarios[categoria.id] ? funcionarios[categoria.id].length : 0} funcionário(s) • 
                         {formatMoeda(calcularCustosSetor(categoria.id))}
                         {categoria.rateado && pesoRateio[categoria.id] && 
@@ -1007,7 +1007,7 @@ export default function CalculoHorasApp() {
                   {funcionarios[categoria.id] && funcionarios[categoria.id].map((func, idx) => (
                     <div
                       key={func.id}
-                      className="bg-zinc-900 border border-zinc-800 rounded-lg p-5 card-hover"
+                      className="bg-white border border-gray-200 rounded-lg p-5 card-hover"
                     >
                       <div className="flex items-center gap-4">
                         <div className="flex-1 grid grid-cols-4 gap-4">
@@ -1015,11 +1015,11 @@ export default function CalculoHorasApp() {
                             type="text"
                             value={func.nome}
                             onChange={(e) => atualizarFuncionario(categoria.id, func.id, 'nome', e.target.value)}
-                            className="bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 focus:border-blue-500 transition-all"
+                            className="bg-white border border-gray-300 rounded-lg px-4 py-2.5 focus:border-blue-500 transition-all"
                             placeholder="Nome"
                           />
                           <div>
-                            <label className="text-xs text-zinc-500 block mb-1.5 flex items-center gap-1">
+                            <label className="text-xs text-gray-500 block mb-1.5 flex items-center gap-1">
                               Salário Base
                               <span className="text-[10px] px-1.5 py-0.5 bg-yellow-900/30 text-yellow-400 rounded">com encargos</span>
                             </label>
@@ -1028,12 +1028,12 @@ export default function CalculoHorasApp() {
                               value={obterValorInput(categoria.id, func.id, 'salarioBase')}
                               onChange={(e) => atualizarFuncionario(categoria.id, func.id, 'salarioBase', e.target.value)}
                               onBlur={() => limparValorTemp(`${categoria.id}-${func.id}-salarioBase`)}
-                              className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 font-mono focus:border-blue-500 transition-all"
+                              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5 font-mono focus:border-blue-500 transition-all"
                               placeholder="0,00"
                             />
                           </div>
                           <div>
-                            <label className="text-xs text-zinc-500 block mb-1.5 flex items-center gap-1">
+                            <label className="text-xs text-gray-500 block mb-1.5 flex items-center gap-1">
                               Extras 
                               <span className="text-[10px] px-1.5 py-0.5 bg-green-900/30 text-green-400 rounded">sem encargos</span>
                             </label>
@@ -1042,12 +1042,12 @@ export default function CalculoHorasApp() {
                               value={obterValorInput(categoria.id, func.id, 'extras')}
                               onChange={(e) => atualizarFuncionario(categoria.id, func.id, 'extras', e.target.value)}
                               onBlur={() => limparValorTemp(`${categoria.id}-${func.id}-extras`)}
-                              className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 font-mono focus:border-blue-500 transition-all"
+                              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5 font-mono focus:border-blue-500 transition-all"
                               placeholder="0,00"
                             />
                           </div>
                           <div>
-                            <label className="text-xs text-zinc-500 block mb-1.5 flex items-center gap-1">
+                            <label className="text-xs text-gray-500 block mb-1.5 flex items-center gap-1">
                               Auxílio
                               <span className="text-[10px] px-1.5 py-0.5 bg-green-900/30 text-green-400 rounded">sem encargos</span>
                             </label>
@@ -1056,19 +1056,19 @@ export default function CalculoHorasApp() {
                               value={obterValorInput(categoria.id, func.id, 'auxilio')}
                               onChange={(e) => atualizarFuncionario(categoria.id, func.id, 'auxilio', e.target.value)}
                               onBlur={() => limparValorTemp(`${categoria.id}-${func.id}-auxilio`)}
-                              className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 font-mono focus:border-blue-500 transition-all"
+                              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5 font-mono focus:border-blue-500 transition-all"
                               placeholder="0,00"
                             />
                           </div>
                         </div>
                         <div className="text-right min-w-[180px]">
-                          <div className="bg-zinc-800/50 rounded-lg p-3 space-y-1.5">
+                          <div className="bg-gray-100/50 rounded-lg p-3 space-y-1.5">
                             <div className="flex justify-between text-xs">
-                              <span className="text-zinc-500">Salário Base:</span>
+                              <span className="text-gray-500">Salário Base:</span>
                               <span className="font-mono">{formatMoeda(func.salarioBase)}</span>
                             </div>
                             <div className="flex justify-between text-xs">
-                              <span className="text-zinc-500">Encargos:</span>
+                              <span className="text-gray-500">Encargos:</span>
                               <span className="font-mono text-yellow-400">
                                 {formatMoeda(
                                   (func.salarioBase / 12) + // 13º
@@ -1081,19 +1081,19 @@ export default function CalculoHorasApp() {
                             </div>
                             {func.extras > 0 && (
                               <div className="flex justify-between text-xs">
-                                <span className="text-zinc-500">Extras (sem enc.):</span>
+                                <span className="text-gray-500">Extras (sem enc.):</span>
                                 <span className="font-mono text-green-400">+{formatMoeda(func.extras)}</span>
                               </div>
                             )}
                             {func.auxilio > 0 && (
                               <div className="flex justify-between text-xs">
-                                <span className="text-zinc-500">Auxílio (sem enc.):</span>
+                                <span className="text-gray-500">Auxílio (sem enc.):</span>
                                 <span className="font-mono text-green-400">+{formatMoeda(func.auxilio)}</span>
                               </div>
                             )}
-                            <div className="flex justify-between pt-1.5 border-t border-zinc-700">
-                              <span className="text-zinc-400 font-semibold text-xs">TOTAL:</span>
-                              <span className="font-mono text-base font-bold text-blue-400">{formatMoeda(calcularCustoFuncionario(func))}</span>
+                            <div className="flex justify-between pt-1.5 border-t border-gray-300">
+                              <span className="text-gray-600 font-semibold text-xs">TOTAL:</span>
+                              <span className="font-mono text-base font-bold text-blue-600">{formatMoeda(calcularCustoFuncionario(func))}</span>
                             </div>
                           </div>
                         </div>
@@ -1107,9 +1107,9 @@ export default function CalculoHorasApp() {
                     </div>
                   ))}
                   {(!funcionarios[categoria.id] || funcionarios[categoria.id].length === 0) && (
-                    <div className="bg-zinc-900/50 border border-zinc-800 border-dashed rounded-lg p-8 text-center">
-                      <Users className="w-12 h-12 text-zinc-700 mx-auto mb-3" />
-                      <p className="text-zinc-500">Nenhum funcionário cadastrado nesta categoria</p>
+                    <div className="bg-white/50 border border-gray-200 border-dashed rounded-lg p-8 text-center">
+                      <Users className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                      <p className="text-gray-500">Nenhum funcionário cadastrado nesta categoria</p>
                     </div>
                   )}
                 </div>
@@ -1123,37 +1123,37 @@ export default function CalculoHorasApp() {
           <div className="animate-fade-in space-y-6">
             <div>
               <h2 className="text-2xl font-display">Cálculo de Custo por Hora</h2>
-              <p className="text-zinc-400 mt-1">Custos diretos + rateio proporcional de custos indiretos</p>
+              <p className="text-gray-600 mt-1">Custos diretos + rateio proporcional de custos indiretos</p>
             </div>
 
             {/* Configurações de Horas */}
-            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+            <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
               <h3 className="text-lg font-display mb-4 flex items-center gap-2">
                 <Clock className="w-5 h-5 text-blue-500" />
                 Configurações de Horas
               </h3>
               <div className="grid md:grid-cols-3 gap-4">
                 <div>
-                  <label className="text-sm text-zinc-400 block mb-2">Horas Contratadas/Mês</label>
+                  <label className="text-sm text-gray-600 block mb-2">Horas Contratadas/Mês</label>
                   <input
                     type="text"
                     value={obterValorHora('contratadas', horasContratadas)}
                     onChange={(e) => atualizarHorasContratadas(e.target.value)}
                     onBlur={() => limparValorTemp('hora-contratadas')}
-                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 font-mono text-xl font-bold focus:border-blue-500 transition-all"
+                    className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5 font-mono text-xl font-bold focus:border-blue-500 transition-all"
                     placeholder="180,00"
                   />
                 </div>
                 <div>
-                  <label className="text-sm text-zinc-400 block mb-2 flex items-center gap-2">
+                  <label className="text-sm text-gray-600 block mb-2 flex items-center gap-2">
                     Horas Ociosas/Dia
                     <span className="group relative">
-                      <svg className="w-4 h-4 text-zinc-500 cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 text-gray-500 cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="10" strokeWidth="2"/>
                         <path d="M12 16v-4" strokeWidth="2"/>
                         <circle cx="12" cy="8" r="0.5" fill="currentColor"/>
                       </svg>
-                      <span className="invisible group-hover:visible absolute left-0 top-6 w-64 bg-zinc-800 border border-zinc-700 rounded-lg p-3 text-xs text-zinc-300 shadow-xl z-10">
+                      <span className="invisible group-hover:visible absolute left-0 top-6 w-64 bg-gray-100 border border-gray-300 rounded-lg p-3 text-xs text-gray-700 shadow-xl z-10">
                         Desconta tempo improdutivo apenas dos setores que geram receita
                       </span>
                     </span>
@@ -1163,18 +1163,18 @@ export default function CalculoHorasApp() {
                     value={obterValorHora('ociosas', horasOciosas)}
                     onChange={(e) => atualizarHorasOciosas(e.target.value)}
                     onBlur={() => limparValorTemp('hora-ociosas')}
-                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 font-mono text-xl font-bold focus:border-blue-500 transition-all"
+                    className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5 font-mono text-xl font-bold focus:border-blue-500 transition-all"
                     placeholder="0,50"
                   />
                 </div>
                 <div>
-                  <label className="text-sm text-zinc-400 block mb-2">Dias Úteis/Mês</label>
+                  <label className="text-sm text-gray-600 block mb-2">Dias Úteis/Mês</label>
                   <input
                     type="text"
                     value={obterValorHora('dias', diasMedio)}
                     onChange={(e) => atualizarDiasMedio(e.target.value)}
                     onBlur={() => limparValorTemp('hora-dias')}
-                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 font-mono text-xl font-bold focus:border-blue-500 transition-all"
+                    className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5 font-mono text-xl font-bold focus:border-blue-500 transition-all"
                     placeholder="21,00"
                   />
                 </div>
@@ -1184,10 +1184,10 @@ export default function CalculoHorasApp() {
             {/* Info sobre Rateio */}
             <div className="bg-blue-900/20 border border-blue-800/30 rounded-xl p-5">
               <div className="flex items-start gap-3">
-                <TrendingUp className="w-5 h-5 text-blue-400 mt-1" />
+                <TrendingUp className="w-5 h-5 text-blue-600 mt-1" />
                 <div className="w-full">
                   <h4 className="font-semibold text-blue-300 mb-2">Rateio Proporcional de Custos</h4>
-                  <p className="text-sm text-zinc-400 leading-relaxed mb-3">
+                  <p className="text-sm text-gray-600 leading-relaxed mb-3">
                     Os custos fixos e das categorias não-rateadas ({formatMoeda(custosNaoRateados)}) - incluindo Societário, Administrativo, PCP e Comercial - são distribuídos 
                     proporcionalmente entre as categorias rateadas com base no peso salarial:
                   </p>
@@ -1195,7 +1195,7 @@ export default function CalculoHorasApp() {
                     {categoriasRateadas.map(cat => (
                       <div key={cat.id}>
                         <span className={`text-${cat.cor}-400 font-semibold`}>{cat.nome}:</span> {(pesoRateio[cat.id] * 100).toFixed(1)}%
-                        <span className="text-zinc-500 text-sm ml-2">({formatMoeda(custosRateadosPorCategoria[cat.id])})</span>
+                        <span className="text-gray-500 text-sm ml-2">({formatMoeda(custosRateadosPorCategoria[cat.id])})</span>
                       </div>
                     ))}
                   </div>
@@ -1209,44 +1209,44 @@ export default function CalculoHorasApp() {
                 if (!resultado) return null;
                 
                 return (
-                  <div key={categoria.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+                  <div key={categoria.id} className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
                     <div className="flex items-center gap-3 mb-6">
                       <div className={`w-3 h-3 rounded-full bg-${categoria.cor}-500`}></div>
                       <h3 className="text-xl font-display">{categoria.nome}</h3>
                     </div>
                     
                     <div className="space-y-4">
-                      <div className="flex justify-between items-center py-3 border-b border-zinc-800">
-                        <span className="text-zinc-400">Funcionários</span>
+                      <div className="flex justify-between items-center py-3 border-b border-gray-200">
+                        <span className="text-gray-600">Funcionários</span>
                         <span className="font-mono font-bold">{resultado.qtdFuncionarios}</span>
                       </div>
-                      <div className="flex justify-between items-center py-3 border-b border-zinc-800">
-                        <span className="text-zinc-400">Horas Disponíveis</span>
+                      <div className="flex justify-between items-center py-3 border-b border-gray-200">
+                        <span className="text-gray-600">Horas Disponíveis</span>
                         <span className="font-mono font-bold">{resultado.horasDisponiveis}h</span>
                       </div>
-                      <div className="flex justify-between items-center py-3 border-b border-zinc-800">
-                        <span className="text-zinc-400">Horas Úteis</span>
+                      <div className="flex justify-between items-center py-3 border-b border-gray-200">
+                        <span className="text-gray-600">Horas Úteis</span>
                         <span className="font-mono font-bold">{resultado.horasUteis.toFixed(1)}h</span>
                       </div>
                       
                       {/* Breakdown de Custos */}
-                      <div className="bg-zinc-800/50 rounded-lg p-4 space-y-2 mt-4">
+                      <div className="bg-gray-100/50 rounded-lg p-4 space-y-2 mt-4">
                         <div className="flex justify-between text-sm">
-                          <span className="text-zinc-400">Custo Direto (Folha)</span>
+                          <span className="text-gray-600">Custo Direto (Folha)</span>
                           <span className="font-mono">{formatMoeda(resultado.custoDireto)}</span>
                         </div>
                         <div className="flex justify-between text-sm">
-                          <span className="text-zinc-400">Custo Rateado</span>
+                          <span className="text-gray-600">Custo Rateado</span>
                           <span className="font-mono">{formatMoeda(resultado.custoRateado)}</span>
                         </div>
-                        <div className="flex justify-between font-semibold pt-2 border-t border-zinc-700">
-                          <span className="text-zinc-300">Custo Total</span>
+                        <div className="flex justify-between font-semibold pt-2 border-t border-gray-300">
+                          <span className="text-gray-700">Custo Total</span>
                           <span className="font-mono">{formatMoeda(resultado.custoTotal)}</span>
                         </div>
                       </div>
 
-                      <div className="flex justify-between items-center py-4 bg-zinc-800/50 rounded-lg px-4 mt-4">
-                        <span className="text-zinc-300 font-semibold">CUSTO/HORA</span>
+                      <div className="flex justify-between items-center py-4 bg-gray-100/50 rounded-lg px-4 mt-4">
+                        <span className="text-gray-700 font-semibold">CUSTO/HORA</span>
                         <span className={`font-mono text-2xl font-bold text-${categoria.cor}-400`}>
                           {formatMoeda(resultado.custoHora)}
                         </span>
@@ -1264,25 +1264,25 @@ export default function CalculoHorasApp() {
           <div className="animate-fade-in space-y-6">
             <div>
               <h2 className="text-2xl font-display">Resumo Geral</h2>
-              <p className="text-zinc-400 mt-1">Visão consolidada de todos os custos e indicadores</p>
+              <p className="text-gray-600 mt-1">Visão consolidada de todos os custos e indicadores</p>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
               <div className="stat-card rounded-xl p-5">
-                <p className="text-zinc-400 text-sm font-semibold mb-2">Custos Fixos</p>
+                <p className="text-gray-600 text-sm font-semibold mb-2">Custos Fixos</p>
                 <p className="text-2xl font-display">{formatMoeda(totalCustosFixos)}</p>
               </div>
               <div className="stat-card rounded-xl p-5">
-                <p className="text-zinc-400 text-sm font-semibold mb-2">Societário</p>
+                <p className="text-gray-600 text-sm font-semibold mb-2">Societário</p>
                 <p className="text-2xl font-display">{formatMoeda(calcularCustosSetor('socio'))}</p>
               </div>
               <div className="stat-card rounded-xl p-5">
-                <p className="text-zinc-400 text-sm font-semibold mb-2">Admin + PCP + Comercial</p>
+                <p className="text-gray-600 text-sm font-semibold mb-2">Admin + PCP + Comercial</p>
                 <p className="text-2xl font-display">{formatMoeda(custoAdmin + custoPCP + custoComercial)}</p>
               </div>
               <div className="stat-card rounded-xl p-5">
-                <p className="text-zinc-400 text-sm font-semibold mb-2">Custos Produção</p>
-                <p className="text-zinc-500 text-xs mb-1">Marceneiro e Auxiliares</p>
+                <p className="text-gray-600 text-sm font-semibold mb-2">Custos Produção</p>
+                <p className="text-gray-500 text-xs mb-1">Marceneiro e Auxiliares</p>
                 <p className="text-2xl font-display">{formatMoeda(totalCustosProducao)}</p>
               </div>
               <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl p-5">
@@ -1294,7 +1294,7 @@ export default function CalculoHorasApp() {
             {/* Categorias Customizadas */}
             {custosCategoriasCustom > 0 && (
               <div>
-                <h3 className="text-lg font-display mb-3 text-zinc-300">Outras Categorias</h3>
+                <h3 className="text-lg font-display mb-3 text-gray-700">Outras Categorias</h3>
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                   {categorias
                     .filter(cat => !['socio', 'administrativo', 'pcp', 'comercial', 'marceneiro', 'auxiliar'].includes(cat.id))
@@ -1305,11 +1305,11 @@ export default function CalculoHorasApp() {
                         <div key={cat.id} className="stat-card rounded-xl p-4">
                           <div className="flex items-center gap-2 mb-2">
                             <div className={`w-2 h-2 rounded-full bg-${cat.cor}-500`}></div>
-                            <p className="text-zinc-400 text-sm font-semibold">{cat.nome}</p>
+                            <p className="text-gray-600 text-sm font-semibold">{cat.nome}</p>
                           </div>
                           <p className="text-xl font-display">{formatMoeda(custo)}</p>
                           {cat.rateado && (
-                            <p className="text-xs text-zinc-500 mt-1">Categoria rateada</p>
+                            <p className="text-xs text-gray-500 mt-1">Categoria rateada</p>
                           )}
                         </div>
                       );
@@ -1319,7 +1319,7 @@ export default function CalculoHorasApp() {
             )}
 
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+              <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
                 <h3 className="text-lg font-display mb-4 flex items-center gap-2">
                   <Users className="w-5 h-5 text-blue-500" />
                   Custos por Categoria
@@ -1329,9 +1329,9 @@ export default function CalculoHorasApp() {
                     <div key={cat.id} className="flex items-center justify-between py-2">
                       <div className="flex items-center gap-2">
                         <div className={`w-2 h-2 rounded-full bg-${cat.cor}-500`}></div>
-                        <span className="text-zinc-300">{cat.nome}</span>
+                        <span className="text-gray-700">{cat.nome}</span>
                         {cat.rateado && pesoRateio[cat.id] !== undefined && (
-                          <span className="text-xs text-zinc-500">({(pesoRateio[cat.id] * 100).toFixed(0)}%)</span>
+                          <span className="text-xs text-gray-500">({(pesoRateio[cat.id] * 100).toFixed(0)}%)</span>
                         )}
                       </div>
                       <span className="font-mono font-bold">{formatMoeda(calcularCustosSetor(cat.id))}</span>
@@ -1340,7 +1340,7 @@ export default function CalculoHorasApp() {
                 </div>
               </div>
 
-              <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+              <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
                 <h3 className="text-lg font-display mb-4 flex items-center gap-2">
                   <Clock className="w-5 h-5 text-blue-500" />
                   Custo/Hora com Rateio
@@ -1351,11 +1351,11 @@ export default function CalculoHorasApp() {
                     if (!resultado) return null;
                     
                     return (
-                      <div key={cat.id} className="bg-zinc-800/30 rounded-lg p-4">
+                      <div key={cat.id} className="bg-gray-100/30 rounded-lg p-4">
                         <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center gap-2">
                             <div className={`w-2 h-2 rounded-full bg-${cat.cor}-500`}></div>
-                            <span className="text-zinc-300 font-semibold">{cat.nome}</span>
+                            <span className="text-gray-700 font-semibold">{cat.nome}</span>
                           </div>
                           <span className={`font-mono text-xl font-bold text-${cat.cor}-400`}>
                             {formatMoeda(resultado.custoHora)}
@@ -1363,19 +1363,19 @@ export default function CalculoHorasApp() {
                         </div>
                         <div className="grid grid-cols-2 gap-4 text-sm">
                           <div>
-                            <span className="text-zinc-500">Funcionários:</span>
+                            <span className="text-gray-500">Funcionários:</span>
                             <span className="ml-2 font-mono">{resultado.qtdFuncionarios}</span>
                           </div>
                           <div>
-                            <span className="text-zinc-500">Horas úteis:</span>
+                            <span className="text-gray-500">Horas úteis:</span>
                             <span className="ml-2 font-mono">{resultado.horasUteis.toFixed(0)}h</span>
                           </div>
                           <div>
-                            <span className="text-zinc-500">Custo direto:</span>
+                            <span className="text-gray-500">Custo direto:</span>
                             <span className="ml-2 font-mono text-xs">{formatMoeda(resultado.custoDireto)}</span>
                           </div>
                           <div>
-                            <span className="text-zinc-500">Rateado:</span>
+                            <span className="text-gray-500">Rateado:</span>
                             <span className="ml-2 font-mono text-xs">{formatMoeda(resultado.custoRateado)}</span>
                           </div>
                         </div>
@@ -1387,24 +1387,24 @@ export default function CalculoHorasApp() {
             </div>
 
             {/* Detalhamento do Rateio */}
-            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+            <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
               <h3 className="text-lg font-display mb-4 flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-blue-500" />
                 Metodologia de Rateio
               </h3>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 <div>
-                  <p className="text-sm text-zinc-400 mb-2">Custos Não-Rateados Total</p>
-                  <p className="text-2xl font-mono font-bold text-blue-400">{formatMoeda(custosNaoRateados)}</p>
-                  <p className="text-xs text-zinc-500 mt-1">Fixos + Societário + Admin + PCP + Comercial + Outras</p>
+                  <p className="text-sm text-gray-600 mb-2">Custos Não-Rateados Total</p>
+                  <p className="text-2xl font-mono font-bold text-blue-600">{formatMoeda(custosNaoRateados)}</p>
+                  <p className="text-xs text-gray-500 mt-1">Fixos + Societário + Admin + PCP + Comercial + Outras</p>
                 </div>
                 {categoriasRateadas.map(cat => (
                   <div key={cat.id}>
-                    <p className="text-sm text-zinc-400 mb-2">Salário Base {cat.nome}</p>
+                    <p className="text-sm text-gray-600 mb-2">Salário Base {cat.nome}</p>
                     <p className={`text-2xl font-mono font-bold text-${cat.cor}-400`}>
                       {formatMoeda(salarioBasePorCategoria[cat.id] || 0)}
                     </p>
-                    <p className="text-xs text-zinc-500 mt-1">
+                    <p className="text-xs text-gray-500 mt-1">
                       Peso: {((pesoRateio[cat.id] || 0) * 100).toFixed(1)}%
                     </p>
                   </div>
@@ -1413,14 +1413,14 @@ export default function CalculoHorasApp() {
             </div>
 
             {/* Botão Exportar PDF */}
-            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+            <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
               <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                 <div className="flex-1">
                   <h3 className="text-lg font-display mb-2 flex items-center gap-2">
                     <Download className="w-5 h-5 text-blue-500" />
                     Exportar Relatório
                   </h3>
-                  <p className="text-sm text-zinc-400">
+                  <p className="text-sm text-gray-600">
                     Gere um PDF completo com todos os dados calculados, incluindo detalhamento por categoria,
                     custos de produção e metodologia de rateio.
                   </p>
