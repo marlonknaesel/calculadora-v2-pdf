@@ -474,15 +474,15 @@ export default function CalculoHorasApp() {
     categorias.forEach(cat => {
       const custoTotal = calcularCustosSetor(cat.id);
       const qtdFunc = funcionarios[cat.id] ? funcionarios[cat.id].length : 0;
-      const horasContratadas = qtdFunc * horasContratadas;
+      const totalHorasContratadas = qtdFunc * horasContratadas;
       const horasOciosasTotal = horasOciosas * diasMedio * qtdFunc;
-      const horasUteis = horasContratadas - horasOciosasTotal;
+      const horasUteis = totalHorasContratadas - horasOciosasTotal;
 
       tabelaCategorias.push([
         cat.nome,
         formatMoeda(custoTotal),
         qtdFunc.toString(),
-        `${horasContratadas.toFixed(0)}h`,
+        `${totalHorasContratadas.toFixed(0)}h`,
         `${horasUteis.toFixed(0)}h`
       ]);
     });
