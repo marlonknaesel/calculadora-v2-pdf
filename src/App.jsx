@@ -1,16 +1,12 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { Calculator, Users, DollarSign, Clock, Plus, Trash2, TrendingUp, Building, Download } from 'lucide-react';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
 export default function CalculoHorasApp() {
   // 🔍 VERIFICAÇÃO DE VERSÃO
-  console.log('📊 VERSÃO: v1.9-EXECUTIVE-PDF');
-  console.log('✅ PDF Executivo com Big Numbers e Rankings');
-  console.log('✅ Menu com scroll horizontal no mobile');
-  console.log('✅ Paddings responsivos aplicados');
-  console.log('✅ High contrast mantido');
-  console.log('📅 Data: 14/01/2026 - 21:00');
+  console.log('📊 VERSÃO: v1.9-FIX-PDF');
+  console.log('✅ CORREÇÃO: totalFolhaPagamento definido');
   
   const [activeTab, setActiveTab] = useState('custos');
   
@@ -443,6 +439,11 @@ export default function CalculoHorasApp() {
 
   // Função para gerar PDF
   const gerarPDF = () => {
+    // CORREÇÃO AQUI: Calculando o total da folha antes de usar no relatório
+    const totalFolhaPagamento = categorias.reduce((acc, cat) => {
+      return acc + calcularCustosSetor(cat.id);
+    }, 0);
+
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
